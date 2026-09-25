@@ -67,7 +67,7 @@ img { display: block; max-width: 100%; }
 }
 @media (max-width: 480px) {
   /* On a phone the frame must fill the viewport exactly, or a bottom sheet lands below the fold. */
-  html, body { height: 100dvh; overflow: hidden; }
+  body.demo { height: 100dvh; overflow: hidden; }
   .demo-bar { flex-wrap: nowrap; overflow-x: auto; height: 48px; padding: 6px 10px; box-sizing: border-box; scrollbar-width: none; }
   .demo-bar::-webkit-scrollbar { display: none; }
   .demo-bar button, .demo-bar a, .demo-bar strong { white-space: nowrap; flex: none; }
