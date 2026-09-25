@@ -17,7 +17,7 @@
     .cta a.secondary { background: #fff; color: var(--lr-black); box-shadow: inset 0 0 0 2px var(--lr-black); }
 
     .hero { display: grid; grid-template-columns: 1fr minmax(240px, 300px); gap: 32px; align-items: center; margin-bottom: 48px; }
-    @media (max-width: 720px) { .hero { grid-template-columns: 1fr; } .hero-shot { order: -1; } }
+    @media (max-width: 720px) { .hero { grid-template-columns: 1fr; } .hero-shot { max-width: 320px; margin: 0 auto; } }
     .hero .cta { margin: 26px 0 0; }
     .hero .src { margin: 16px 0 0 6px; font-size: 13px; font-weight: 700; color: var(--lr-gray-3); }
     .hero .src a { color: var(--lr-gray-3); font-weight: 700; }
@@ -157,7 +157,6 @@
       </div>
     </div>
 
-    <p class="foot">Want to see my iterative process on this page? The earlier version is still up: <a href="./review-v2.html">v2</a>. Measurement plan and next steps are in the <a href="https://github.com/mikeprimak/lets-roam-hunt/blob/main/DESIGN_REVIEW.md">written review</a>.</p>
   </section>
 </div>
 </body>
