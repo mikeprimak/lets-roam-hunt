@@ -12,6 +12,8 @@ With Clarity in mind I approached the Main Hunt Screen redesign, using things li
 other elements to focus the user on their next task: big orange buttons, very clear language, and all secondary info
 should be subservient to the main goals visually.
 
+I also adjusted the user workflow, so it is one smooth forward navigation, rather than a hub-and-spoke model.
+
 - Demo: https://lets-roam-hunt.vercel.app
 - This review as a page, with the screens side by side: https://lets-roam-hunt.vercel.app/review-v3.html
 - Earlier versions of the page, kept so the iteration is visible: [v1](https://lets-roam-hunt.vercel.app/review.html),
@@ -74,8 +76,8 @@ above.
 - **Screen transforms into the checked-in state.** The card stays where it is. The check-in button animates and
   indicates success, and the next stop appears (photo, walk time, address and a big orange button), keeping you
   focused on moving forward.
-- **Optional challenges are visually below the mandatory next step.** They slide up under the same card, named after
-  the place. Visual hierarchy, so the user is clear what's really critical.
+- **Optional challenges are visually below the mandatory next step.** Visual hierarchy, so the user is clear what's
+  really critical.
 - **Increased use of clarifying language.** Plain English everywhere, in small cues the user reads without noticing:
   "Completed Stop 3 of 5", "3 optional challenges below", "6 min walk", "Trivia", "Photo", "Fill in". Every state of
   the screen says what it is and what comes next, so it is very hard to be confused.
