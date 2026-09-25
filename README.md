@@ -46,7 +46,7 @@ stands in for the GPS: **Simulate GPS: arrive**. In the app that event comes fro
    in), points and state. One bottom sheet, never stacked. Multiple choice, a year wheel for year questions, text,
    and photo. One try, then "Next challenge" with a small "Try again" if you want it. A hint costs 25 points. Skip
    goes straight to the next one. Any challenge can be reopened later to try again.
-4. **All challenges done.** A teal "All challenges done here · +400 pts" strip at the top of the list. The next-stop
+4. **All challenges done.** A teal "All challenges done here" strip at the top of the list. The next-stop
    button is the one already on the stop card, so there is only ever one.
 5. **Revisit a stop.** The route bar under "On Stop 2 of 5" is tappable. Tapping a completed stop shows it with a
    "Completed" badge, its challenges still open, and a navy bar plus an orange button that both say "Back to Stop 3",

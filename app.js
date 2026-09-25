@@ -317,7 +317,7 @@
       ${viewStopCard(stop, anim)}
       <div class="challenges ${anim === "checkin" ? "slide-in" : ""}">
         <div class="section-head"><h3>${esc(stop.name)} Challenges</h3><span class="count">${doneCount} of ${required.length} done</span></div>
-        ${complete ? `<div class="strip teal all-done">${I.check}<span>All challenges done here</span><span class="pts">+${fmtPts(challengesOf(stop).reduce((n, c) => n + ((state.results[c.challengeId] || {}).points || 0), 0))} pts</span></div>` : ""}
+        ${complete ? `<div class="strip teal all-done">${I.check}<span>All challenges done here</span></div>` : ""}
         ${list.map(viewChallengeRow).join("")}
         <div class="spacer-bottom"></div>
       </div>`;
