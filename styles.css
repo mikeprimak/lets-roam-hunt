@@ -66,7 +66,13 @@ img { display: block; max-width: 100%; }
   display: flex; flex-direction: column;
 }
 @media (max-width: 480px) {
-  .phone { height: calc(100dvh - 60px); margin: 0; border-radius: 0; box-shadow: none; }
+  /* On a phone the frame must fill the viewport exactly, or a bottom sheet lands below the fold. */
+  html, body { height: 100dvh; overflow: hidden; }
+  .demo-bar { flex-wrap: nowrap; overflow-x: auto; height: 48px; padding: 6px 10px; box-sizing: border-box; scrollbar-width: none; }
+  .demo-bar::-webkit-scrollbar { display: none; }
+  .demo-bar button, .demo-bar a, .demo-bar strong { white-space: nowrap; flex: none; }
+  .demo-bar .spacer { display: none; }
+  .phone { height: calc(100dvh - 48px); min-height: 0; margin: 0; border-radius: 0; box-shadow: none; }
   .demo-bar span.hint { display: none; }
   .demo-note { display: none; }
 }
