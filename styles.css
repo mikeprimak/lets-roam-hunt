@@ -278,6 +278,16 @@ img { display: block; max-width: 100%; }
 .textinput:focus { border-color: var(--lr-orange); box-shadow: 0 0 0 4px rgba(232,119,34,.26); }
 .textinput.wrong { border-color: var(--lr-red); animation: shake 300ms; }
 @keyframes shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+.wheel-wrap { position: relative; height: 176px; border-radius: var(--radius-less); background: var(--lr-white-1); overflow: hidden; border: 2px solid transparent; }
+.wheel-wrap.wrong { border-color: var(--lr-red); }
+.wheel-band { position: absolute; left: 10px; right: 10px; top: 66px; height: 44px; border-radius: 10px; background: var(--lr-off-orange); border: 2px solid var(--lr-orange); pointer-events: none; }
+.wheel { position: absolute; inset: 0; overflow-y: auto; scroll-snap-type: y mandatory; padding: 66px 0; scrollbar-width: none; -webkit-mask-image: linear-gradient(transparent, #000 35%, #000 65%, transparent); mask-image: linear-gradient(transparent, #000 35%, #000 65%, transparent); }
+.wheel::-webkit-scrollbar { display: none; }
+.wheel > div { height: 44px; scroll-snap-align: center; display: grid; place-items: center; font-size: 22px; font-weight: 600; color: var(--lr-gray-2); }
+.wheel > div.on { color: var(--lr-black); font-weight: 800; }
+.wheel[data-locked] { pointer-events: none; }
+.next-row { margin-top: 8px; }
+.next-row.rise-in { animation: risein 500ms 350ms ease both; }
 .photo-drop {
   display: grid; place-items: center; gap: 6px; padding: 22px; border-radius: var(--radius-less);
   border: 2px dashed var(--lr-gray-1); background: var(--lr-white-1); text-align: center; color: var(--lr-gray-3); font-weight: 600; font-size: 14px;

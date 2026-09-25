@@ -39,10 +39,12 @@ stands in for the GPS: **Simulate GPS: arrive**. In the app that event comes fro
    Check in button that is disabled until you arrive, with the reason written under it. "Skip this stop" is always
    there for closed locations.
 2. **Check in.** Flat +500. The card stays put: the button pops into a teal "Checked in" with a burst of confetti, the
-   points land under it, and the challenges slide up from below so they read as part of this place. Each has a word
-   label (Trivia, Photo, Fill in), points and state.
-3. **Challenges.** One bottom sheet, never stacked. Multiple choice, fill-in and photo. Two tries, a hint that costs
-   25 points, a free skip, then the answer is revealed and "Next challenge" moves on inside the same sheet.
+   points land under it, and a "Next stop" button appears right there. On the first stop the button reads
+   "Check In & Start Tour". The wording (Tour / Hunt / Crawl) follows the event type in the data.
+3. **Challenges.** Optional extras that slide up under the stop card, each with a word label (Trivia, Photo, Fill
+   in), points and state. One bottom sheet, never stacked. Multiple choice, a year wheel for year questions, text,
+   and photo. One try, then "Next challenge" with a small "Try again" if you want it. A hint costs 25 points. Skip
+   goes straight to the next one.
 4. **Stop done.** A celebration card with the points earned, the fox, the next stop and its walk time, and
    "Let's go". This is the transition the current design leaves empty.
 5. **Map.** Route with numbered stops, done / current states and your position. Stylised, not real tiles.

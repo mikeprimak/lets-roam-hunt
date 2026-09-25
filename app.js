@@ -10,6 +10,8 @@
   const SCORING = DATA.scoring;
   const STOPS = G.locationList.map((id) => G.locations[id]);
   const IS_TIMED = G.timerLimitMinutes > 0;
+  const EVENT = { ghostTour: "Tour", scavaHunt: "Hunt", barCrawl: "Crawl" }[DATA.group.info.huntType] || "Hunt";
+  const event = EVENT.toLowerCase();
 
   // ---------- state ----------
   const initial = () => ({
@@ -84,9 +86,8 @@
     closeSheet() { if (state.sheet && state.sheet.type === "challenge" && stopResolved(currentStop())) state.anim = "stopdone"; state.sheet = null; },
     select(i) { if (state.sheet && !state.sheet.feedback) state.sheet.selected = i; },
     useHint() {
-      const s = state.sheet; if (!s || s.hint || (s.feedback && !s.feedback.retry)) return;
+      const s = state.sheet; if (!s || s.hint || s.feedback) return;
       s.hint = true;
-      if (s.feedback) { s.feedback = null; s.selected = null; }
     },
     takePhoto() { if (state.sheet) state.sheet.photo = true; },
     submit() {
@@ -98,7 +99,9 @@
         if (s.selected == null) return;
         ok = c.answers[s.selected] === c.correctAnswer;
       } else if (c.type === "text") {
-        const val = normalize(document.getElementById("answer") ? document.getElementById("answer").value : s.input);
+        const wheel = document.getElementById("wheel");
+        if (wheel) s.input = String(Number(wheel.dataset.y0) + Math.round(wheel.scrollTop / 44));
+        const val = c.answerType === "year" ? String(s.input || "") : normalize(document.getElementById("answer") ? document.getElementById("answer").value : s.input);
         s.input = val;
         if (!val) return;
         const accept = (c.accept || [c.correctAnswer]).map(normalize);
@@ -115,20 +118,15 @@
         bumpScore();
       } else {
         s.tries += 1;
-        const left = SCORING.triesPerQuestion - s.tries;
-        if (left > 0) {
-          s.feedback = { kind: "bad", retry: true, text: `Not quite. ${left} ${left === 1 ? "try" : "tries"} left.` };
-        } else {
-          state.results[s.id] = { status: "wrong", points: 0, tries: s.tries, hint: s.hint };
-          s.feedback = { kind: "reveal", points: 0, text: `The answer was "${c.correctAnswer}".` };
-        }
+        state.results[s.id] = { status: "wrong", points: 0, tries: s.tries, hint: s.hint };
+        s.feedback = { kind: "bad", points: 0, text: "Not quite." };
       }
     },
-    retry() { const s = state.sheet; if (s) { s.feedback = null; s.selected = null; } },
+    retry() { const s = state.sheet; if (s) { delete state.results[s.id]; s.feedback = null; s.selected = null; } },
     skipChallenge() {
       const s = state.sheet; if (!s) return;
       state.results[s.id] = { status: "skipped", points: 0, tries: s.tries, hint: s.hint };
-      s.feedback = { kind: "skipped", points: 0, text: "Skipped. No points lost." };
+      A.nextChallenge();
     },
     nextChallenge() {
       const stop = currentStop();
@@ -219,11 +217,16 @@
     const burst = anim === "checkin" ? `<span class="burst" aria-hidden="true">${Array.from({ length: 14 }, (_, i) => `<i style="--a:${Math.round(i * (360 / 14))}deg;--d:${44 + (i % 3) * 14}px;--c:${["#E87722", "#FDD264", "#6AAEAA"][i % 3]}"></i>`).join("")}</span>` : "";
     let button, note;
     if (checked) {
+      const next = nextStop();
       button = `<button class="btn checked ${anim === "checkin" ? "pop" : ""}" disabled>${I.check}Checked in${burst}</button>`;
-      note = `<p class="cta-note"><b class="earned-note ${anim === "checkin" ? "rise" : ""}">+${SCORING.checkIn} pts</b> · now the ${required} challenges below</p>`;
+      note = `<p class="cta-note"><b class="earned-note ${anim === "checkin" ? "rise" : ""}">+${SCORING.checkIn} pts</b></p>
+          <div class="btn-row next-row ${anim === "checkin" ? "rise-in" : ""}">
+            <button class="btn dark" data-action="finishStop">${next ? `Next stop: ${esc(next.name)}` : `Finish ${EVENT}`}${I.arrow}</button>
+          </div>
+          <p class="cta-note">${next ? `${next.walkMinutes} min walk · ` : ""}${required} optional challenges below</p>`;
     } else {
-      button = `<button class="btn primary" data-action="checkIn" ${state.arrived ? "" : "disabled"}>${I.check}Check in</button>`;
-      note = `<p class="cta-note">${state.arrived ? `Check in to unlock ${required} challenges and earn +${SCORING.checkIn} pts` : "Check in turns on when you are within 50 m of the stop."}</p>
+      button = `<button class="btn primary" data-action="checkIn" ${state.arrived ? "" : "disabled"}>${I.check}${state.stopIdx === 0 ? `Check In &amp; Start ${EVENT}` : "Check in"}</button>`;
+      note = `<p class="cta-note">${state.arrived ? `Check in to earn +${SCORING.checkIn} pts and see the challenges here` : "Check in turns on when you are within 50 m of the stop."}</p>
           <p class="cta-note"><button class="linkbtn" data-action="openSkipStop">Closed or can't get there? Skip this stop</button></p>`;
     }
     return `
@@ -275,7 +278,7 @@
       ${viewStopCard(stop, anim)}
       ${complete ? viewStopComplete(stop) : ""}
       <div class="challenges ${anim === "checkin" ? "slide-in" : ""}">
-        <div class="section-head"><h3>Challenges here</h3><span class="count">${doneCount} of ${required.length} done</span></div>
+        <div class="section-head"><h3>Challenges here</h3><span class="count">Optional · ${doneCount} of ${required.length} done</span></div>
         ${list.map(viewChallengeRow).join("")}
         <div class="spacer-bottom"></div>
       </div>`;
@@ -296,7 +299,7 @@
               <div><div class="k">Next stop</div><div class="n">${esc(next.name)}</div><div class="w">${next.walkMinutes} min walk · ${next.walkMiles} mi</div></div>
             </div>
             <div class="btn-row"><button class="btn primary" data-action="finishStop">Let's go${I.arrow}</button></div>`
-            : `<div class="btn-row"><button class="btn primary" data-action="finishStop">Finish the hunt${I.arrow}</button></div>`}
+            : `<div class="btn-row"><button class="btn primary" data-action="finishStop">Finish the ${event}${I.arrow}</button></div>`}
         </div>
       </section>`;
   }
@@ -309,7 +312,7 @@
       <section class="card">
         <div class="celebrate">
           <img src="./assets/img/fox-star.png" alt="">
-          <h2>You survived the ghost tour</h2>
+          <h2>${EVENT} complete!</h2>
           <p class="earned">Final score <b>${fmtPts(state.score)}</b></p>
           <div class="summary">
             <div><b>${STOPS.filter((s) => state.stopStatus[s.locationId] === "done").length}/${STOPS.length}</b><span>Stops</span></div>
@@ -338,7 +341,7 @@
     const list = challengesOf(stop).filter((x) => !x.optional);
     const idx = list.findIndex((x) => x.challengeId === s.id);
     const fb = s.feedback;
-    const locked = !!fb && !fb.retry;
+    const locked = !!fb;
     let control = "";
     if (c.type === "multiple_choice") {
       control = `<div class="choices" role="radiogroup">${c.answers.map((a, i) => {
@@ -346,6 +349,10 @@
         if (locked) { if (a === c.correctAnswer) cls = "correct"; else if (s.selected === i) cls = "wrong"; }
         return `<button class="choice ${cls}" role="radio" aria-checked="${s.selected === i}" data-action="select" data-i="${i}" ${locked ? "disabled" : ""}><span class="radio"></span>${esc(a)}</button>`;
       }).join("")}</div>`;
+    } else if (c.type === "text" && c.answerType === "year") {
+      const [y0, y1] = SCORING.yearRange;
+      const years = []; for (let y = y0; y <= y1; y++) years.push(y);
+      control = `<div class="wheel-wrap ${fb && fb.kind === "bad" ? "wrong" : ""}"><div class="wheel-band"></div><div class="wheel" id="wheel" data-y0="${y0}" ${locked ? 'data-locked="1"' : ""} tabindex="0" aria-label="Pick a year">${years.map((y) => `<div class="${String(y) === String(s.input) ? "on" : ""}">${y}</div>`).join("")}</div></div>`;
     } else if (c.type === "text") {
       control = `<input id="answer" class="textinput ${fb && fb.kind === "bad" ? "wrong" : ""}" type="text" autocomplete="off" placeholder="Type your answer" value="${esc(s.input)}" ${locked ? "disabled" : ""} enterkeyhint="done">`;
     } else {
@@ -355,7 +362,7 @@
     }
     let feedback = "";
     if (fb) {
-      const cls = fb.kind === "ok" ? "ok" : fb.kind === "bad" || fb.kind === "reveal" ? "bad" : "neutral";
+      const cls = fb.kind === "ok" ? "ok" : fb.kind === "bad" ? "bad" : "neutral";
       const icon = fb.kind === "ok" ? I.check : fb.kind === "skipped" ? I.flag : I.x;
       feedback = `<div class="feedback ${cls}" role="status">${icon}<span>${esc(fb.text)}</span>${fb.points != null ? `<span class="pts">${fb.points > 0 ? "+" : ""}${fb.points}</span>` : ""}</div>`;
     }
@@ -367,13 +374,11 @@
           ${c.hint && !s.hint ? `<button class="linkbtn" data-action="useHint">${I.bulb.replace("<svg", '<svg style="width:16px;height:16px;vertical-align:-3px"')} Use a hint (−${SCORING.hintCost} pts)</button>` : "<span></span>"}
           <button class="linkbtn" data-action="skipChallenge">Skip this one</button>
         </div>`;
-    } else if (fb.retry) {
-      actions = `<button class="btn primary" data-action="retry">Try again</button>
-        <div class="helper">${c.hint && !s.hint ? `<button class="linkbtn" data-action="useHint">Use a hint (−${SCORING.hintCost} pts)</button>` : "<span></span>"}<button class="linkbtn" data-action="skipChallenge">Skip this one</button></div>`;
     } else {
-      actions = hasNext
+      actions = (hasNext
         ? `<button class="btn primary" data-action="nextChallenge">Next challenge${I.arrow}</button>`
-        : `<button class="btn primary" data-action="closeSheet">Done</button>`;
+        : `<button class="btn primary" data-action="closeSheet">Done</button>`)
+        + (fb.kind === "bad" ? `<div class="helper" style="justify-content:center"><button class="btn ghost sm" data-action="retry">Try again</button></div>` : "");
     }
     return `
       <div class="sheet-head">
@@ -395,7 +400,7 @@
       <div class="sheet-head"><span class="kind">How points work</span><button class="iconbtn" data-action="closeSheet" aria-label="Close">${I.x}</button></div>
       <div class="sheet-body">
         <ul class="rules">${SCORING.rules.map(([k, v]) => `<li><span>${esc(k)}</span><b class="${v.startsWith("-") || v.startsWith("0") ? "neg" : ""}">${esc(v)}</b></li>`).join("")}</ul>
-        <p class="lore">Stops go in order. You can skip any challenge, or a whole stop if it is closed. Nothing you skip costs points.</p>
+        <p class="lore">Stops go in order. Checking in is what moves the ${event} forward; the challenges at each stop are optional extras. You can skip any challenge, or a whole stop if it is closed. Nothing you skip costs points.</p>
         <div class="help-actions">
           <button class="btn secondary" data-action="openSkipStop">${I.flag}This stop is closed</button>
           <button class="btn ghost" data-action="support">${I.help}Chat with support</button>
@@ -409,7 +414,7 @@
       <div class="sheet-head"><span class="kind">Skip this stop</span><button class="iconbtn" data-action="closeSheet" aria-label="Close">${I.x}</button></div>
       <div class="sheet-body">
         <h2>Skip ${esc(stop.name)}?</h2>
-        <p class="lore" style="margin-top:0">You keep every point you have earned. ${next ? `The next stop is <b>${esc(next.name)}</b>, ${next.walkMinutes} min away.` : "This is the last stop, so skipping it ends the hunt."}</p>
+        <p class="lore" style="margin-top:0">You keep every point you have earned. ${next ? `The next stop is <b>${esc(next.name)}</b>, ${next.walkMinutes} min away.` : `This is the last stop, so skipping it ends the ${event}.`}</p>
         <div class="actions">
           <button class="btn dark" data-action="skipStop">${I.flag}Skip and move on</button>
           <button class="btn ghost" data-action="closeSheet">Keep going here</button>
@@ -475,6 +480,23 @@
     if (anim === "checkin") setTimeout(() => { const el = root.querySelector(".challenges"); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 900);
     if (anim === "stopdone") setTimeout(() => { const el = root.querySelector(".celebrate"); if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 150);
     const input = root.querySelector("#answer"); if (input && !input.disabled && state.sheet && !state.sheet.feedback) input.focus({ preventScroll: true });
+    const wheel = root.querySelector("#wheel");
+    if (wheel) {
+      const y0 = Number(wheel.dataset.y0); const h = 44;
+      const st = state.sheet;
+      const start = Number(st.input) || 1900;
+      wheel.scrollTop = (start - y0) * h;
+      if (!st.input) st.input = String(start);
+      const cur = wheel.children[start - y0]; if (cur) cur.classList.add("on");
+      if (!wheel.dataset.locked) {
+        let t = null;
+        wheel.addEventListener("scroll", () => {
+          const idx = Math.round(wheel.scrollTop / h);
+          const y = y0 + idx;
+          if (String(y) !== st.input) { st.input = String(y); wheel.querySelectorAll(".on").forEach((el) => el.classList.remove("on")); const el = wheel.children[idx]; if (el) el.classList.add("on"); }
+        }, { passive: true });
+      }
+    }
     updateDemoBar();
   }
 

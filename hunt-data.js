@@ -6,7 +6,7 @@ window.HUNT_DATA = {
     info: {
       groupId: "offline-demo",
       teamName: "The Roaming Crew",
-      huntType: "ghostTour",
+      huntType: "ghostTour",        // ghostTour | scavaHunt | barCrawl -> the app says Tour / Hunt / Crawl
       score: 0,
       groupPhoto: "./assets/img/team-photo.webp",
       huntStarted: true,
@@ -90,7 +90,8 @@ window.HUNT_DATA = {
       },
       "pike-year": {
         challengeId: "pike-year", locationId: "pike", type: "text", name: "Opening Day",
-        question: "Pike Place Market first opened in ____. Guess the year.",
+        question: "Pike Place Market first opened in ____. Pick the year.",
+        answerType: "year",                 // NEW: renders a year wheel instead of a text box
         correctAnswer: "1907", hint: "It is older than the theatre at the next stop.", points: 100
       },
       // Moore Theatre
@@ -133,7 +134,8 @@ window.HUNT_DATA = {
       // Post Alley
       "pa-gum": {
         challengeId: "pa-gum", locationId: "postalley", type: "text", name: "Sticky Situation",
-        question: "The Gum Wall was declared a tourist attraction in ____. Guess the year.",
+        question: "The Gum Wall was declared a tourist attraction in ____. Pick the year.",
+        answerType: "year",
         correctAnswer: "1999", hint: "Just before the millennium.", points: 100
       },
       "pa-pub": {
@@ -169,14 +171,14 @@ window.HUNT_DATA = {
   scoring: {
     checkIn: 500,
     hintCost: 25,
-    triesPerQuestion: 2,
+    yearRange: [1850, 2026],
     rules: [
       ["Check in at a stop", "+500"],
       ["Trivia or fill-in question", "+100"],
       ["Photo challenge", "+200"],
       ["Bonus photo (optional)", "+500"],
       ["Use a hint", "-25"],
-      ["Skip a challenge", "0, no penalty"],
+      ["Skip or miss a challenge", "0, no penalty"],
       ["Skip a closed stop", "check-in points kept"]
     ]
   }
