@@ -7,6 +7,7 @@ Frontend developer project for Let's Roam. A review of the current hunt screen, 
 - Earlier version kept for reference: [v2](https://lets-roam-hunt.vercel.app/review-v2.html)
 - **Written review, with the decisions made while iterating:** [DESIGN_REVIEW.md](./DESIGN_REVIEW.md)
 - **AI transcript:** [AI_CONVERSATION_TRANSCRIPT.md](./AI_CONVERSATION_TRANSCRIPT.md)
+- **Video walkthrough:** https://lets-roam-hunt.vercel.app/video/Lets-Roam-Screen-Redesign-Challenge-Michael-Primak-2026.mp4
 
 ## Run it
 
