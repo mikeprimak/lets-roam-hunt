@@ -598,8 +598,8 @@
   const demoReset = document.getElementById("demo-reset");
   function updateDemoBar() {
     if (!demoArrive) return;
-    demoArrive.disabled = state.arrived || state.huntDone;
-    demoArrive.textContent = state.huntDone ? "Hunt finished" : state.arrived ? `At ${currentStop().name}` : `Simulate GPS: arrive at ${currentStop().name}`;
+    demoArrive.hidden = state.arrived || state.huntDone;
+    demoArrive.textContent = `Simulate GPS: arrive at ${currentStop().name}`;
   }
   if (demoArrive) demoArrive.addEventListener("click", () => { A.simulateArrive(); render(); });
   if (demoReset) demoReset.addEventListener("click", () => { A.reset(); render(); });
