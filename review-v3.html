@@ -27,16 +27,17 @@
     h2 { font-size: 32px; letter-spacing: -0.04em; line-height: 1.05; margin: 0 0 18px; }
     section { margin-bottom: 56px; }
 
-    .needs { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+    .needs { display: grid; grid-template-columns: 1fr; gap: 12px; max-width: 760px; }
     .need { background: #fff; border-radius: 12px; box-shadow: var(--shadow-card); padding: 20px 20px 18px; }
     .need .big { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin: 0 0 10px; }
     .need p { margin: 0; font-size: 15px; line-height: 1.55; font-weight: 500; color: var(--lr-gray-4); }
     .need p b { color: var(--lr-black); }
     .then { margin: 16px 0 0; font-size: 16px; font-weight: 600; color: var(--lr-gray-3); }
 
-    .phil { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+    .phil { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (max-width: 640px) { .phil { grid-template-columns: 1fr; } }
     .p { background: #fff; border-radius: 12px; box-shadow: var(--shadow-card); padding: 18px 20px; display: flex; gap: 14px; }
-    .p .n { flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--lr-black); color: #fff; font-weight: 800; display: grid; place-items: center; font-size: 15px; }
+    .p .n { flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--lr-orange); color: #fff; font-weight: 800; display: grid; place-items: center; font-size: 15px; }
     .p h3 { margin: 4px 0 6px; font-size: 19px; letter-spacing: -0.03em; }
     .p p { margin: 0; font-size: 14.5px; line-height: 1.55; font-weight: 500; color: var(--lr-gray-4); }
     .p.lead-p { grid-column: 1 / -1; background: var(--lr-black); color: #fff; }
@@ -86,9 +87,9 @@
     <p class="label">Part one</p>
     <h2>What The Main Hunt Screen Needs To Communicate</h2>
     <div class="needs">
-      <div class="need"><p class="big">Where do we go next?</p><p>The name of the next stop, a picture of it, its address, and an estimated walk time.</p></div>
-      <div class="need"><p class="big">What do we do when we get there?</p><p>Check In. Feel Rewarded. Optional Extra Challenges. Go To The Next Location. The user should feel confident about what to do in app once they arrive at each stop, and visual design can support that.</p></div>
-      <div class="need"><p class="big">Are we doing OK?</p><p>Reassurance that the users are on track and following the tour correctly. A progress bar that clearly indicates what stop they are on and where they stand relative to the whole tour.</p></div>
+      <div class="need"><p class="big">Where do we go next?</p><p>The name of the next stop, a picture of it, its address, an estimated walk time, walking directions and a map.</p></div>
+      <div class="need"><p class="big">What do we do when we get there?</p><p>The next action, whether it be checking in, enjoying the challenges or identifying the next location, should be clear and easy to understand.</p></div>
+      <div class="need"><p class="big">Are we on track?</p><p>Reassurance that the users are on track and following the tour correctly. Users are less likely to give up when they feel they are doing it correctly.</p></div>
     </div>
   </section>
 
@@ -96,7 +97,7 @@
     <p class="label">Part two</p>
     <h2>Design Philosophy</h2>
     <div class="phil">
-      <div class="p lead-p"><span class="n">1</span><div><h3>Clarity First.</h3><p>A group standing on a pavement should know what to do in one glance. Points, the gamification and extras matter, but they must be secondary to clarity of the core flow.</p></div></div>
+      <div class="p"><span class="n">1</span><div><h3>Clarity First</h3><p>A group standing on a pavement should know what to do in one glance. Points, the gamification and extras matter, but they must be secondary to clarity of the core flow.</p></div></div>
       <div class="p"><span class="n">2</span><div><h3>One Next Action</h3><p>Every state of the screen has exactly one primary button: Directions, Check in, Submit, Next stop.</p></div></div>
       <div class="p"><span class="n">3</span><div><h3>Use Words</h3><p>Labels beat colour codes and icons alone. Plain English beats jargon. "Check in turns on when you are within 50 m" instead of a greyed-out button and a guess.</p></div></div>
       <div class="p"><span class="n">4</span><div><h3>Checking-In Is A Big Win</h3><p>Arriving is a core accomplishment for Let's Roamers, so the check-in itself gets the celebration: the button pops, confetti, the points land, and "Next stop" appears right there.</p></div></div>
@@ -116,7 +117,6 @@
           <p class="k">What changed</p>
           <ul>
             <li>One Main Button<small>"Check In &amp; Start Tour" takes the user by the hand and says: do this.</small></li>
-            <li>Horizontal Progress Bar<small>Acts as information and navigation</small></li>
             <li>Tour And Team Names At The Top<small>Keeping the overall task in focus</small></li>
             <li>No Loss State<small>Users can skip a stop, unskip it, revisit a completed one and retry any challenge. Nothing is irreversible, so there is no frustration or sense of failure, and they are free to explore the app.</small></li>
           </ul>
@@ -134,7 +134,7 @@
           <ul>
             <li>Check In Button Animates And Indicates Success!<small>A dopamine hit as a reward for finding the location.</small></li>
             <li>Next Stop Appears<small>Keeping you focused on moving forward.</small></li>
-            <li>Optional Challenges Are Visually Below The Required Next Step<small>They slide up under the same card, named after the place.</small></li>
+            <li>Optional Challenges Are Visually Below The Mandatory Next Step<small>They slide up under the same card, named after the place.</small></li>
             <li>Increased Use Of Clarifying Language<small>Plain English everywhere, in small cues the user reads without noticing: "Completed Stop 3 of 5", "3 optional challenges below", "6 min walk", "Trivia", "Photo", "Fill in", "Check in turns on when you are within 50 m". Every state of the screen says what it is and what comes next, so it is very hard to be confused.</small></li>
           </ul>
         </div>
@@ -149,9 +149,9 @@
         <div class="notes">
           <p class="k">What changed</p>
           <ul>
-            <li>The Next Stop Is The Main Screen<small>In the current app the next location is a pop-up sheet you only reach by tapping the right card in a list. In the redesign it is the screen itself: "Next stop" badge, photo, name, address, and "6 min walk" instead of "2.88 mi away".</small></li>
+            <li>One Flow, Not A Hub And Spokes<small>The current app is a hub: a list of locations, and a pop-up sheet for whichever one you tap. The redesign is a single flow of screens, each with one big action that pulls you through to the next: check in, next stop, directions, check in. The next stop is simply the next screen.</small></li>
             <li>Directions, Then Check In<small>Two buttons in the order you need them. Check in unlocks on arrival and says so in words.</small></li>
-            <li>Closed Or Unreachable? Skip It<small>Points already earned stay, and the stop can be unskipped later.</small></li>
+            <li>Something Preventing Check-In?<small>Eliminate frustrating dead ends with an option to skip (can also be unskipped).</small></li>
           </ul>
         </div>
       </div>
