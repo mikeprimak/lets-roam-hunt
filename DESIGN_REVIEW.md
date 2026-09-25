@@ -136,7 +136,6 @@ Completion rate is the outcome. Leading indicators worth logging so we know *why
 
 - Drop-off by stop index. Stop 1 is a clarity problem; stop 3 or 4 is fatigue or closed locations.
 - Skips and unskips, per challenge and per stop. A high skip rate on one question is a content fix.
-- Info sheet opens per session; should fall.
 - A rating prompt on the finish screen, while the fox is still up.
 
 Ship behind a flag to a share of new tours and compare for two weeks.
