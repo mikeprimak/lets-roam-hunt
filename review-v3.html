@@ -18,8 +18,8 @@
 
     .hero { display: grid; grid-template-columns: 1fr minmax(240px, 300px); gap: 32px; align-items: center; margin-bottom: 48px; }
     @media (max-width: 720px) { .hero { grid-template-columns: 1fr; } .hero-shot { order: -1; } }
-    .hero .cta { margin-bottom: 0; }
-    .hero .src { margin: 10px 0 0 6px; font-size: 13px; font-weight: 700; color: var(--lr-gray-3); }
+    .hero .cta { margin: 26px 0 0; }
+    .hero .src { margin: 16px 0 0 6px; font-size: 13px; font-weight: 700; color: var(--lr-gray-3); }
     .hero .src a { color: var(--lr-gray-3); font-weight: 700; }
     .hero .lead { font-size: 15.5px; margin-bottom: 10px; }
     .hero-shot .cap { font-size: 13px; color: var(--lr-gray-3); font-weight: 600; text-align: center; margin: 10px 0 0; }
@@ -73,8 +73,9 @@
     <div class="hero-text">
       <h1>Main Hunt Screen Redesign</h1>
       <p class="lead">The purpose of this redesign is to improve completion rate and customer satisfaction rate for Let's Roam tours.</p>
-      <p class="lead">The Main Hunt Screen and its associated user workflow is the core of the app, and is the most important to completion rate and customer satisfaction.</p>
-      <p class="lead">My design philosophy usually centers around Clarity. I find a UI that is clear is good. The design should communicate very clearly "What the user is supposed to do on this screen," and ideally that is a single primary action. That action should always be very obvious and easy to take in-app action on. In practice this means using color, size, location, omission and other elements to focus the user on their next task: big orange buttons, very clear language, all secondary info subservient to the main goals.</p>
+      <p class="lead">The Main Hunt Screen and its associated user workflow is the core of the app and is the most important to completion rate and customer satisfaction.</p>
+      <p class="lead">My design philosophy usually centers around <b><u>Clarity</u></b>. A visual interface that helps the user immediately understand "What do I do on this screen?" is good UI.</p>
+      <p class="lead">With Clarity in mind I approached the main Hunt Screen redesign, using things like color, size, location, omission and other elements to focus the user on their next task: big orange buttons, very clear language, and all secondary info should be subservient to the main goals visually.</p>
       <div class="cta"><a class="primary" href="./index.html">Try a Demo of the Redesigned Screen</a></div>
       <p class="src"><a href="https://github.com/mikeprimak/lets-roam-hunt">Source on GitHub</a></p>
     </div>
@@ -118,7 +119,7 @@
             <li>One main button<small>"Check In &amp; Start Tour" takes the user by the hand and says: do this.</small></li>
             <li>Horizontal progress bar<small>acts as information and navigation</small></li>
             <li>Tour and team names at the top<small>keeping the overall task in focus</small></li>
-            <li>Ease of tour navigation<small>Getting from one screen to another on the tour should be accessible. Users should be able to skip steps, unskip steps, view completed stages, and in general control the state of their tour with ease. This means they won't get anxious about accidentally doing something in app that is irreversible, and they are free to experiment with how the app works. There is no way to mess it up, essentially.</small></li>
+            <li>No loss state<small>Users can skip a stop, unskip it, revisit a completed one and retry any challenge. Nothing is irreversible, so there is no frustration or sense of failure, and they are free to explore the app.</small></li>
           </ul>
         </div>
       </div>
@@ -132,10 +133,10 @@
         <div class="notes">
           <p class="k">What changed</p>
           <ul>
-            <li>Same card, button turns "Checked in"<small>with a burst, the way a like button rewards you</small></li>
-            <li>Next stop / next main task is made very clear<small>photo, walk time, address and a new big orange button</small></li>
-            <li>Challenges are optional<small>they slide up under the same card, named after the place</small></li>
-            <li>Word labels: Trivia, Photo, Fill in<small>User experience is made easier with type-specific input fields (ie, a year question only allows a year, not text. This will prevent user error frustrations.) Users can also try the challenges again, so there is no true fail state, keeping it fun and light.</small></li>
+            <li>Check In Button Animates And Indicates Success!<small>A dopamine hit as a reward for finding the location.</small></li>
+            <li>Next Stop Appears<small>Keeping you focused on moving forward.</small></li>
+            <li>Optional Challenges Are Visually Below The Mandatory Next Step<small>They slide up under the same card, named after the place.</small></li>
+            <li>Increased Use Of Clarifying Language<small>Every challenge says what it is (Trivia, Photo, Fill in) and what it is worth. Inputs match the question: a year wheel for a year, choices for a choice, so the app never accepts the wrong kind of answer. A miss says "Not quite" and can be retried, so there is no true fail state.</small></li>
           </ul>
         </div>
       </div>
@@ -144,15 +145,14 @@
     <div class="pair">
       <h3>En Route</h3>
       <div class="trio">
-        <div class="shot"><span class="tag old">Current</span><div class="frame"><img src="./assets/current/screen-05.png" alt="Current location sheet with map and Check In"></div></div>
+        <div class="shot"><span class="tag old">Current</span><div class="frame"><img src="./assets/current/screen-06.png" alt="Current location sheet: photo, distance, description, Check In"></div></div>
         <div class="shot"><span class="tag new">Redesign</span><div class="frame"><img src="./assets/redesign/next-stop.png" alt="Redesign, on the way to stop 2"></div></div>
         <div class="notes">
           <p class="k">What changed</p>
           <ul>
-            <li>The next stop is the whole screen, not a sheet<small>"Next stop" badge, photo, name, address, and a walk time instead of "2.88 mi away"</small></li>
-            <li>Directions, then Check in<small>the check-in button unlocks on arrival and says so in words</small></li>
-            <li>Same card before and after arriving<small>the user never changes screens; the button changes state</small></li>
-            <li>Closed or unreachable? Skip it<small>points already earned stay; the stop can be unskipped later</small></li>
+            <li>The Next Stop Is The Main Screen<small>In the current app the next location is a pop-up sheet you only reach by tapping the right card in a list. In the redesign it is the screen itself: "Next stop" badge, photo, name, address, and "6 min walk" instead of "2.88 mi away".</small></li>
+            <li>Directions, Then Check In<small>Two buttons in the order you need them. Check in unlocks on arrival and says so in words.</small></li>
+            <li>Closed Or Unreachable? Skip It<small>Points already earned stay, and the stop can be unskipped later.</small></li>
           </ul>
         </div>
       </div>
