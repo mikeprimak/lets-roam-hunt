@@ -45,7 +45,8 @@
   const shownIdx = () => (state.viewIdx == null ? state.stopIdx : state.viewIdx);
   const shownStop = () => STOPS[shownIdx()];
   const isRevisit = () => state.viewIdx != null && state.viewIdx !== state.stopIdx;
-  const nextStop = () => STOPS[state.stopIdx + 1] || null;
+  const nextIdxAfter = (i) => { for (let k = i + 1; k < STOPS.length; k++) if (!state.stopStatus[STOPS[k].locationId]) return k; return -1; };
+  const nextStop = () => { const k = nextIdxAfter(state.stopIdx); return k < 0 ? null : STOPS[k]; };
   const challengesOf = (stop) => stop.challengeList.map((id) => G.allChallenges[id]);
   const resolved = (id) => !!state.results[id];
   const stopResolved = (stop) => challengesOf(stop).filter((c) => !c.optional).every((c) => resolved(c.challengeId));
@@ -163,16 +164,24 @@
     },
     viewStop(i) {
       i = Number(i);
-      if (i > state.stopIdx) { toast(`Check in at ${currentStop().name} first`, "pin"); return; }
+      if (i > state.stopIdx && !state.stopStatus[STOPS[i].locationId]) { toast(`Check in at ${currentStop().name} first`, "pin"); return; }
       state.viewIdx = i === state.stopIdx && !state.huntDone ? null : i;
       state.loreOpen = false;
     },
     backToCurrent() { state.viewIdx = null; state.loreOpen = false; },
+    unskipStop() {
+      const i = shownIdx(); const stop = STOPS[i];
+      if (state.stopStatus[stop.locationId] !== "skipped") return;
+      delete state.stopStatus[stop.locationId];
+      state.stopIdx = i; state.viewIdx = null; state.arrived = false; state.huntDone = false; state.loreOpen = false;
+      toast(`Back on Stop ${i + 1}: ${stop.name}`, "pin");
+    },
     advance() {
       state.loreOpen = false;
       state.viewIdx = null;
-      if (state.stopIdx + 1 >= STOPS.length) { state.huntDone = true; return; }
-      state.stopIdx += 1;
+      const k = nextIdxAfter(state.stopIdx);
+      if (k < 0) { state.huntDone = true; return; }
+      state.stopIdx = k;
       state.arrived = false;
     },
     showMap() { state.view = "map"; },
@@ -210,9 +219,10 @@
           <img src="${team.groupPhoto}" alt="">
           <div><div class="name">${esc(G.huntName)}</div><div class="hunt">Team ${esc(team.teamName)}</div></div>
         </div>
-        <span class="pill score ${bump ? "bump" : ""}" aria-label="Team score">${I.bolt}<span id="score">${fmtPts(state.score)}</span></span>
-        ${IS_TIMED ? `<span class="pill time ${state.timeLeft < 600 ? "low" : ""}" aria-label="Time left">${I.clock}<span id="time">${fmtTime(state.timeLeft)}</span></span>` : ""}
-        <button class="pill icon-only" data-action="openHelp" aria-label="Info and help">${I.help}</button>
+        <div class="stats">
+          <div class="row"><span class="pill score ${bump ? "bump" : ""}" aria-label="Team score">${I.bolt}<span id="score">${fmtPts(state.score)}</span></span><button class="pill icon-only" data-action="openHelp" aria-label="Info and help">${I.help}</button></div>
+          ${IS_TIMED ? `<div class="row"><span class="pill time ${state.timeLeft < 600 ? "low" : ""}" aria-label="Time left">${I.clock}<span id="time">${fmtTime(state.timeLeft)}</span></span></div>` : ""}
+        </div>
       </header>`;
   }
 
@@ -225,7 +235,7 @@
           ${STOPS.map((s, i) => {
             const st = state.stopStatus[s.locationId];
             const cls = st === "done" ? "done" : st === "skipped" ? "skipped" : i === state.stopIdx && !state.huntDone ? "current" : "";
-            const reachable = i <= state.stopIdx;
+            const reachable = i <= state.stopIdx || !!st;
             return `<button class="step ${cls} ${i === shownIdx() ? "shown" : ""} ${reachable ? "tappable" : ""}" data-action="viewStop" data-i="${i}" role="tab" aria-selected="${i === shownIdx()}" aria-label="Stop ${i + 1}: ${esc(s.name)}${st ? ", " + st : ""}"></button>`;
           }).join("")}
         </div>
@@ -242,8 +252,8 @@
     let button, note;
     if (revisit) {
       const back = state.huntDone ? "Back to results" : `Back to Stop ${state.stopIdx + 1}: ${esc(currentStop().name)}`;
-      button = checked ? `<button class="btn checked" disabled>${I.check}Checked in</button>` : `<button class="btn ghost" disabled>${I.flag}Skipped</button>`;
-      note = `<p class="cta-note">${checked ? `<b class="earned-note">+${SCORING.checkIn} pts</b> · the ${required} challenges below are still open` : "You skipped this stop. No points lost."}</p>
+      button = checked ? `<button class="btn checked" disabled>${I.check}Checked in</button>` : `<button class="btn secondary" data-action="unskipStop">${I.flag}Unskip this stop</button>`;
+      note = `<p class="cta-note">${checked ? `<b class="earned-note">+${SCORING.checkIn} pts</b> · the ${required} challenges below are still open` : "You skipped this stop. Unskip it to come back and check in here."}</p>
           <div class="btn-row"><button class="btn primary" data-action="backToCurrent">${back}${I.arrow}</button></div>`;
     } else if (checked) {
       const next = nextStop();
@@ -471,10 +481,14 @@
       </div>`;
   }
 
+  let sheetWasOpen = false;
   function viewSheet() {
-    const s = state.sheet; if (!s) return "";
+    const s = state.sheet;
+    const wasOpen = sheetWasOpen; sheetWasOpen = !!s;
+    if (!s) return "";
     const inner = s.type === "challenge" ? viewChallengeSheet(s) : s.type === "help" ? viewHelpSheet() : viewSkipStopSheet();
-    return `<div class="scrim" data-action="closeSheet"></div><div class="sheet" role="dialog" aria-modal="true"><div class="grab"></div>${inner}</div>`;
+    const still = wasOpen ? "still" : "";
+    return `<div class="scrim ${still}" data-action="closeSheet"></div><div class="sheet ${still}" role="dialog" aria-modal="true"><div class="grab"></div><div class="sheet-inner ${wasOpen ? "swap" : ""}">${inner}</div></div>`;
   }
 
   // ---------- map ----------

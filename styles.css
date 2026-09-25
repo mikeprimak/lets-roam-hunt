@@ -83,10 +83,17 @@ img { display: block; max-width: 100%; }
 }
 .topbar .team { display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1; }
 .topbar .team img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid var(--lr-off-orange); }
+.topbar { align-items: flex-start; }
+.topbar .team { align-items: flex-start; }
+.topbar .team img { margin-top: 2px; }
 .topbar .team > div { min-width: 0; }
-.topbar .team .name { font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.topbar .team .hunt { font-size: 11px; color: var(--text-muted); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.topbar .pill { flex: none; }
+.topbar .team .name { font-weight: 700; font-size: 15px; line-height: 1.2; letter-spacing: -0.02em; }
+.topbar .team .hunt { font-size: 12px; color: var(--text-muted); font-weight: 600; margin-top: 2px; }
+.topbar .stats { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex: none; }
+.topbar .stats .row { display: flex; gap: 4px; }
+.topbar .pill { flex: none; padding: 5px 9px; font-size: 12px; }
+.topbar .pill.icon-only { padding: 6px; }
+.topbar .pill svg { width: 13px; height: 13px; }
 .pill {
   display: inline-flex; align-items: center; gap: 5px; padding: 6px 11px; border-radius: var(--radius-pill);
   font-size: 13px; font-weight: 700; background: var(--lr-gray-light); color: var(--lr-gray-4); white-space: nowrap;
@@ -271,6 +278,9 @@ img { display: block; max-width: 100%; }
   border-radius: 20px 20px 0 0; max-height: 88%; display: flex; flex-direction: column;
   animation: rise 220ms cubic-bezier(.2,.8,.2,1);
 }
+.sheet.still, .scrim.still { animation: none; }
+.sheet-inner { display: flex; flex-direction: column; min-height: 0; }
+.sheet-inner.swap { animation: fade 180ms ease; }
 .sheet .grab { width: 40px; height: 4px; border-radius: 2px; background: var(--lr-gray-1); margin: 10px auto 0; }
 .sheet .sheet-head { display: flex; align-items: center; gap: 10px; padding: 10px 16px 6px; }
 .sheet .sheet-head .kind { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--lr-gray-3); flex: 1; }
