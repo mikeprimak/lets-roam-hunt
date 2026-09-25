@@ -81,7 +81,16 @@
       bumpScore();
     },
     openChallenge(id) {
-      state.sheet = { type: "challenge", id, selected: null, input: "", hint: false, feedback: null, photo: false, tries: 0 };
+      const r = state.results[id];
+      state.sheet = { type: "challenge", id, selected: null, input: "", hint: !!(r && r.hint), feedback: null, photo: false, tries: r ? r.tries : 0 };
+      if (r && r.status === "correct") {
+        const c = G.allChallenges[id];
+        if (c.type === "multiple_choice") state.sheet.selected = c.answers.indexOf(c.correctAnswer);
+        if (c.type === "photo") state.sheet.photo = true;
+        state.sheet.feedback = { kind: "ok", points: r.points, text: "Already done." };
+      } else if (r) {
+        delete state.results[id];   // wrong or skipped: open it fresh to try again
+      }
     },
     closeSheet() { if (state.sheet && state.sheet.type === "challenge" && stopResolved(currentStop())) state.anim = "stopdone"; state.sheet = null; },
     select(i) { if (state.sheet && !state.sheet.feedback) state.sheet.selected = i; },
@@ -219,11 +228,11 @@
     if (checked) {
       const next = nextStop();
       button = `<button class="btn checked ${anim === "checkin" ? "pop" : ""}" disabled>${I.check}Checked in${burst}</button>`;
-      note = `<p class="cta-note"><b class="earned-note ${anim === "checkin" ? "rise" : ""}">+${SCORING.checkIn} pts</b></p>
-          <div class="btn-row next-row ${anim === "checkin" ? "rise-in" : ""}">
-            <button class="btn dark" data-action="finishStop">${next ? `Next stop: ${esc(next.name)}` : `Finish ${EVENT}`}${I.arrow}</button>
-          </div>
-          <p class="cta-note">${next ? `${next.walkMinutes} min walk · ` : ""}${required} optional challenges below</p>`;
+      note = `<p class="cta-note"><b class="earned-note ${anim === "checkin" ? "rise" : ""}">+${SCORING.checkIn} pts</b> · ${required} optional challenges below</p>
+          <div class="next-block ${anim === "checkin" ? "rise-in" : ""}">
+            ${next ? `<div class="next-stop"><img src="${next.photo}" alt=""><div><div class="k">Next stop</div><div class="n">${esc(next.name)}</div><div class="w">${next.walkMinutes} min walk · ${esc(next.address)}</div></div></div>` : ""}
+            <div class="btn-row"><button class="btn primary" data-action="finishStop">${next ? `Next stop: ${esc(next.name)}` : `Finish ${EVENT}`}${I.arrow}</button></div>
+          </div>`;
     } else {
       button = `<button class="btn primary" data-action="checkIn" ${state.arrived ? "" : "disabled"}>${I.check}${state.stopIdx === 0 ? `Check In &amp; Start ${EVENT}` : "Check in"}</button>`;
       note = `<p class="cta-note">${state.arrived ? `Check in to earn +${SCORING.checkIn} pts and see the challenges here` : "Check in turns on when you are within 50 m of the stop."}</p>
@@ -257,7 +266,7 @@
     const cls = r ? (r.status === "skipped" || r.status === "wrong" ? "skipped" : "done") : "";
     const pts = r ? (r.status === "correct" ? `+${r.points}` : r.status === "wrong" ? "0" : "Skipped") : `${c.points} pts`;
     return `
-      <button class="challenge ${cls} ${c.optional ? "optional" : ""}" data-action="openChallenge" data-id="${c.challengeId}" ${r ? "disabled" : ""}>
+      <button class="challenge ${cls} ${c.optional ? "optional" : ""}" data-action="openChallenge" data-id="${c.challengeId}">
         <span class="tile">${r && r.status === "correct" ? I.check : I[kindIcon[c.type]]}</span>
         <span class="text">
           <span class="kind">${c.optional ? "Optional bonus" : kindLabel[c.type]}</span>
@@ -265,7 +274,7 @@
           <span class="snippet">${esc(c.question)}</span>
         </span>
         <span class="pts">${pts}</span>
-        ${r ? "" : `<span class="chev">${I.chevron}</span>`}
+        <span class="chev">${I.chevron}</span>
       </button>`;
   }
 
