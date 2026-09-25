@@ -542,6 +542,7 @@
     if (anim === "checkin") setTimeout(() => { const el = root.querySelector(".challenges"); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 900);
     if (anim === "stopdone") setTimeout(() => { const el = root.querySelector(".all-done"); if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 150);
     const input = root.querySelector("#answer"); if (input && !input.disabled && state.sheet && !state.sheet.feedback) input.focus({ preventScroll: true });
+    fitReadMore();
     const wheel = root.querySelector("#wheel");
     if (wheel) {
       const y0 = Number(wheel.dataset.y0); const h = 44;
@@ -561,6 +562,15 @@
     }
     updateDemoBar();
   }
+
+  // "Read more" only when the description is actually clipped
+  function fitReadMore() {
+    root.querySelectorAll(".lore.clamp").forEach((el) => {
+      const btn = el.nextElementSibling;
+      if (btn && btn.dataset.action === "toggleLore") btn.hidden = el.scrollHeight <= el.clientHeight + 1;
+    });
+  }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitReadMore);
 
   root.addEventListener("click", (e) => {
     const el = e.target.closest("[data-action]");
