@@ -4,8 +4,7 @@ Frontend developer project for Let's Roam. A review of the current hunt screen, 
 
 - **Live demo:** https://lets-roam-hunt.vercel.app
 - **Design review (what the screen must say, the principles, old vs new):** https://lets-roam-hunt.vercel.app/review-v3.html
-- Earlier versions kept for reference: [v2](https://lets-roam-hunt.vercel.app/review-v2.html) (with the full comparison table)
-- **Screen-by-screen comments on the current design (v1):** https://lets-roam-hunt.vercel.app/review.html
+- Earlier version kept for reference: [v2](https://lets-roam-hunt.vercel.app/review-v2.html)
 - **Written review, with the decisions made while iterating:** [DESIGN_REVIEW.md](./DESIGN_REVIEW.md)
 - **AI transcript:** [AI_CONVERSATION_TRANSCRIPT.md](./AI_CONVERSATION_TRANSCRIPT.md)
 
@@ -67,8 +66,7 @@ app.js            the screen: one state object, one render(), named actions
 hunt-data.js      hunt content, same shape as the current app's HUNT_DATA
 styles.css        design-system tokens and components
 review-v3.html    design review: what the screen must say, principles, old vs new
-review-v2.html    v2: same, with a full comparison table
-review.html       v1: screen-by-screen comments on the current design
+review-v2.html    earlier version of the review page
 DESIGN_REVIEW.md  the review, the changes, and what to measure
 assets/           fonts, mascot and ghost art, current-design screenshots
 ```
