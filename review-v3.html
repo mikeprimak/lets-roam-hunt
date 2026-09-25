@@ -19,8 +19,8 @@
     .hero { display: grid; grid-template-columns: 1fr minmax(240px, 300px); gap: 32px; align-items: center; margin-bottom: 48px; }
     @media (max-width: 720px) { .hero { grid-template-columns: 1fr; } .hero-shot { order: -1; } }
     .hero .cta { margin-bottom: 0; }
-    .hero .src { margin: 10px 0 0; font-size: 13px; font-weight: 600; color: var(--lr-gray-3); }
-    .hero .src a { color: var(--lr-gray-3); }
+    .hero .src { margin: 10px 0 0 6px; font-size: 13px; font-weight: 700; color: var(--lr-gray-3); }
+    .hero .src a { color: var(--lr-gray-3); font-weight: 700; }
     .hero .lead { font-size: 15.5px; margin-bottom: 10px; }
     .hero-shot .cap { font-size: 13px; color: var(--lr-gray-3); font-weight: 600; text-align: center; margin: 10px 0 0; }
     .label { font-size: 13px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--lr-orange); margin: 0 0 8px; }
@@ -83,21 +83,21 @@
 
   <section>
     <p class="label">Part one</p>
-    <h2>What the main hunt screen needs to communicate</h2>
+    <h2>What The Main Hunt Screen Needs To Communicate</h2>
     <div class="needs">
-      <div class="need"><p class="big">Where do we go next?</p><p>The name of the next stop, a picture of it, and <b>an estimated walk time</b>.</p></div>
-      <div class="need"><p class="big">What do we do when we get there?</p><p><b>Check in.</b> The user should feel confident about what to actually do in app once they arrive at a location.</p></div>
-      <div class="need"><p class="big">Are we doing OK?</p><p><b>Reassurance</b> that the users are on track and following the tour correctly. A progress bar that clearly indicates what stop they are on and where they stand relative to the whole tour.</p></div>
+      <div class="need"><p class="big">Where do we go next?</p><p>The name of the next stop, a picture of it, its address, and an estimated walk time.</p></div>
+      <div class="need"><p class="big">What do we do when we get there?</p><p>Check in. The user should feel confident about what to actually do in app once they arrive at a location.</p></div>
+      <div class="need"><p class="big">Are we doing OK?</p><p>Reassurance that the users are on track and following the tour correctly. A progress bar that clearly indicates what stop they are on and where they stand relative to the whole tour.</p></div>
     </div>
     <p class="then">Anything on the screen that does not answer one of these three issues should be questioned. Clarity of main goal over breadth of info and options.</p>
   </section>
 
   <section>
     <p class="label">Part two</p>
-    <h2>Design philosophy</h2>
+    <h2>Design Philosophy</h2>
     <div class="phil">
       <div class="p lead-p"><span class="n">1</span><div><h3>Clarity First.</h3><p>A group standing on a pavement should know what to do in one glance. Points, the gamification and extras matter, but they must be secondary to clarity of the core flow.</p></div></div>
-      <div class="p"><span class="n">2</span><div><h3>One next action</h3><p>Every state of the screen has exactly one primary button: Directions, Check in, Submit, Next stop. If two things are orange, neither is the answer.</p></div></div>
+      <div class="p"><span class="n">2</span><div><h3>One Next Action</h3><p>Every state of the screen has exactly one primary button: Directions, Check in, Submit, Next stop.</p></div></div>
       <div class="p"><span class="n">3</span><div><h3>Use Words</h3><p>Labels beat colour codes and icons alone. Plain English beats jargon. "Check in turns on when you are within 50 m" instead of a greyed-out button and a guess.</p></div></div>
       <div class="p"><span class="n">4</span><div><h3>Checking-In Is A Big Win</h3><p>Arriving is a core accomplishment for Let's Roamers, so the check-in itself gets the celebration: the button pops, confetti, the points land, and "Next stop" appears right there. Challenges are optional extras that slide up under the same card, so a group can always keep moving.</p></div></div>
     </div>
@@ -105,22 +105,20 @@
 
   <section>
     <p class="label">Part three</p>
-    <h2>Current screen vs redesign</h2>
+    <h2>Current Screen vs Redesign</h2>
 
     <div class="pair">
-      <h3>Starting the tour</h3>
+      <h3>Starting The Tour</h3>
       <div class="trio">
         <div class="shot"><span class="tag old">Current</span><div class="frame"><img src="./assets/current/screen-04.png" alt="Current main hunt screen"></div></div>
         <div class="shot"><span class="tag new">Redesign</span><div class="frame"><img src="./assets/redesign/start.png" alt="Redesign, first stop"></div></div>
         <div class="notes">
           <p class="k">What changed</p>
           <ul>
-            <li>One stop, one button<small>"Check In &amp; Start Tour", not five identical cards and a toggle</small></li>
-            <li>"On Stop 1 of 5"<small>replaces the ring, the rank and the ghost line</small></li>
-            <li>Tour name and team in full<small>score, time and info stacked on the right</small></li>
-            <li>What the button does, in words<small>"Check in to earn +500 pts and see the challenges here"</small></li>
-            <li>Closed? Skip the stop, keep points</li>
-            <li>Route bar is tappable<small>revisit or unskip a stop; a navy bar always leads back</small></li>
+            <li>One main button<small>"Check In &amp; Start Tour" takes the user by the hand and says: do this.</small></li>
+            <li>Horizontal progress bar<small>acts as information and navigation</small></li>
+            <li>Tour and team names at the top<small>keeping the overall task in focus</small></li>
+            <li>Ease of tour navigation<small>Getting from one screen to another on the tour should be accessible. Users should be able to skip steps, unskip steps, view completed stages, and in general control the state of their tour with ease. This means they won't get anxious about accidentally doing something in app that is irreversible, and they are free to experiment with how the app works. There is no way to mess it up, essentially.</small></li>
           </ul>
         </div>
       </div>
@@ -135,10 +133,9 @@
           <p class="k">What changed</p>
           <ul>
             <li>Same card, button turns "Checked in"<small>with a burst, the way a like button rewards you</small></li>
-            <li>Next stop is right there<small>photo, walk time, address, one orange button</small></li>
+            <li>Next stop / next main task is made very clear<small>photo, walk time, address and a new big orange button</small></li>
             <li>Challenges are optional<small>they slide up under the same card, named after the place</small></li>
-            <li>Word labels: Trivia, Photo, Fill in<small>year questions get a wheel; one try, small "Try again"; reopen any time</small></li>
-            <li>No third sheet, no chips<small>"Completed Stop 1 of 5" up top</small></li>
+            <li>Word labels: Trivia, Photo, Fill in<small>User experience is made easier with type-specific input fields (ie, a year question only allows a year, not text. This will prevent user error frustrations.) Users can also try the challenges again, so there is no true fail state, keeping it fun and light.</small></li>
           </ul>
         </div>
       </div>
@@ -147,21 +144,21 @@
     <div class="pair">
       <h3>En Route</h3>
       <div class="trio">
-        <div class="shot"><span class="tag old">Current</span><div class="frame"><img src="./assets/current/screen-11.png" alt="Current location complete modal"></div></div>
+        <div class="shot"><span class="tag old">Current</span><div class="frame"><img src="./assets/current/screen-05.png" alt="Current location sheet with map and Check In"></div></div>
         <div class="shot"><span class="tag new">Redesign</span><div class="frame"><img src="./assets/redesign/next-stop.png" alt="Redesign, on the way to stop 2"></div></div>
         <div class="notes">
           <p class="k">What changed</p>
           <ul>
-            <li>"Next stop" badge, "6 min walk", not "2.87 mi"</li>
-            <li>Directions, then Check in<small>check in unlocks on arrival and says so</small></li>
-            <li>No score breakdown, no modal<small>the screen underneath is still home</small></li>
-            <li>Fox and emoji gone from the flow<small>the fox waits for the finish</small></li>
+            <li>The next stop is the whole screen, not a sheet<small>"Next stop" badge, photo, name, address, and a walk time instead of "2.88 mi away"</small></li>
+            <li>Directions, then Check in<small>the check-in button unlocks on arrival and says so in words</small></li>
+            <li>Same card before and after arriving<small>the user never changes screens; the button changes state</small></li>
+            <li>Closed or unreachable? Skip it<small>points already earned stay; the stop can be unskipped later</small></li>
           </ul>
         </div>
       </div>
     </div>
 
-    <p class="foot">Earlier versions: <a href="./review-v2.html">v2</a> (the same argument with a full comparison table) and <a href="./review.html">v1</a> (screen-by-screen comments on the current design). Measurement plan and next steps are in the <a href="https://github.com/mikeprimak/lets-roam-hunt/blob/main/DESIGN_REVIEW.md">written review</a>.</p>
+    <p class="foot">Want to see my iterative process on this page? Every version is still up: <a href="./review.html">v1</a> · <a href="./review-v2.html">v2</a>. Measurement plan and next steps are in the <a href="https://github.com/mikeprimak/lets-roam-hunt/blob/main/DESIGN_REVIEW.md">written review</a>.</p>
   </section>
 </div>
 </body>
