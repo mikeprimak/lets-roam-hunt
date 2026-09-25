@@ -40,25 +40,34 @@ to give up when they feel they are doing it correctly.
 4. **Checking-In Is A Big Win.** Arriving is a core accomplishment for Let's Roamers, so the check-in itself gets the
    celebration: the button pops, confetti, the points land, and "Next stop" appears right there.
 
-## What I saw in the current screens
+## Where the current screens are, and where this takes them
 
-The Ghost Tour flow (eleven screens) and the exported classic hunt components, judged against the three questions
-above.
+I went through the Ghost Tour flow (eleven screens) and the exported classic hunt components with the three
+questions above in mind. The current app already does the hard parts well: the content is written with real
+charm, the stops, check-ins and challenges are all there, and the points system rewards the right things. What
+follows is not a list of faults. It is where I think the next version can go, building on what is already
+working.
 
-- **The main screen is a hub, not a flow.** Rank, four header icons, a countdown, a 0% ring, two chips, a four-line
-  explainer of how points work, a "Show Ordered Locations" toggle, then a list of identical location cards. Nothing
-  says "go here now". The next location is a pop-up sheet you only reach by tapping the right card.
-- **Status crowds out the tour.** The top half of the screen is score and progress. The countdown is the loudest
-  number and it is unexplained.
-- **The instructions are permanent.** "Earn points by: accurate check-ins, finish locations quickly" is read-once
-  copy shown on every visit, and it pushes two ideas that work against completion: GPS accuracy and speed.
-- **Sheets stack three deep.** Location sheet, check-in result modal, challenge list sheet, challenge modal, each
-  with its own close button.
-- **Check-in penalises the phone's GPS** ("392 / 400 for Distance") and the moment after a stop only offers "Show
-  Challenges", not "where next".
-- **Closed locations only get "Let us know".** A locked gate ends the hunt for most groups.
-- **Colour as meaning, no legend.** Orange, grey, yellow challenge tiles. Distance as "2.87 mi" in white over a photo.
-  Four typefaces, three icon sets, emoji in the score breakdown.
+- **The main screen is a strong overview.** It shows every location, the score, the timer and how points are
+  earned all at once. The next evolution is to give that overview a single focal point, so the one thing a group
+  needs right now (the next stop) is the biggest thing on the screen, with everything else available but quieter.
+- **The location sheet has all the right information.** Distance, map or photo, the story, and a check-in button.
+  Making it the main screen itself, rather than a sheet reached from a list, turns the tour into one forward flow
+  where each screen hands you to the next.
+- **The points explainer is useful once.** Moving it into an info sheet that is always one tap away keeps the
+  main screen clear and lets the explainer say more, including a short FAQ about how a tour works.
+- **Check-in is already the key moment.** Giving it the celebration (the button animates, the points land, the
+  next stop appears) makes the reward match the accomplishment, and keeping the card in place makes it obvious
+  that the challenges belong to this place.
+- **The challenge types are well designed.** Adding a word label to each (Trivia, Photo, Fill in), matching the
+  input to the question, and letting people retry keeps the same challenges while removing the small moments
+  where a group could feel stuck.
+- **The sheets and modals each do one job well.** Flattening them so there is at most one sheet over the main
+  screen keeps that clarity while making it harder to lose your place.
+- **Skipping already exists in spirit ("Location closed? Let us know").** Making skip and unskip first-class,
+  along with revisiting completed stops, means a group can never get stuck and is free to explore the app.
+- **The brand has a clear design system.** Using its one typeface, its orange, one icon style and the fox mascot
+  throughout the screen makes everything feel like one finished product.
 
 ## The redesign, screen by screen
 
@@ -125,7 +134,6 @@ the order they came up. Each one is in the app now.
 
 Completion rate is the outcome. Leading indicators worth logging so we know *why* it moved:
 
-- Time between finishing a stop and checking in at the next one, per stop.
 - Drop-off by stop index. Stop 1 is a clarity problem; stop 3 or 4 is fatigue or closed locations.
 - Skips and unskips, per challenge and per stop. A high skip rate on one question is a content fix.
 - Info sheet opens per session; should fall.
