@@ -160,6 +160,22 @@ img { display: block; max-width: 100%; }
 .btn.secondary:hover { background: var(--lr-gray-light); }
 .btn.dark { background: var(--lr-black); color: #fff; }
 .btn.dark:hover { background: var(--lr-gray-4); }
+.btn.checked { background: var(--lr-teal); color: #fff; position: relative; overflow: visible; }
+.btn.checked:disabled { opacity: 1; cursor: default; }
+.btn.checked.pop { animation: pop 600ms cubic-bezier(.2,.9,.3,1.4); }
+@keyframes pop { 0% { transform: scale(.92); } 45% { transform: scale(1.08); } 100% { transform: scale(1); } }
+.burst { position: absolute; left: 50%; top: 50%; width: 0; height: 0; pointer-events: none; }
+.burst i {
+  position: absolute; left: -4px; top: -4px; width: 8px; height: 8px; border-radius: 50%; background: var(--c);
+  transform: rotate(var(--a)) translateX(0); opacity: 0; animation: fly 750ms ease-out forwards;
+}
+.burst i:nth-child(odd) { width: 6px; height: 6px; border-radius: 2px; }
+@keyframes fly { 0% { opacity: 1; transform: rotate(var(--a)) translateX(10px) scale(1); } 100% { opacity: 0; transform: rotate(var(--a)) translateX(var(--d)) scale(.3); } }
+.earned-note { color: var(--lr-orange); display: inline-block; }
+.earned-note.rise { animation: risein 500ms 200ms ease both; }
+@keyframes risein { from { opacity: 0; transform: translateY(8px); } }
+.challenges.slide-in { animation: slideup 550ms 250ms cubic-bezier(.2,.8,.2,1) both; }
+@keyframes slideup { from { opacity: 0; transform: translateY(40px); } }
 .btn.ghost { background: var(--lr-gray-light); color: var(--lr-gray-4); }
 .btn.sm { padding: 10px 14px; font-size: 14px; width: auto; }
 .btn-row { display: flex; gap: 8px; margin-top: 14px; }

@@ -24,7 +24,8 @@
     view: "hunt",             // "hunt" | "map"
     huntDone: false,
     toast: null,
-    loreOpen: false
+    loreOpen: false,
+    anim: null                // one-shot animation flag, consumed by the next render
   });
   let state = initial();
 
@@ -74,13 +75,13 @@
       if (!state.arrived || state.checkedIn[stop.locationId]) return;
       state.checkedIn[stop.locationId] = true;
       state.score += SCORING.checkIn;
-      toast(`Checked in at ${stop.name}`, "check");
+      state.anim = "checkin";
       bumpScore();
     },
     openChallenge(id) {
       state.sheet = { type: "challenge", id, selected: null, input: "", hint: false, feedback: null, photo: false, tries: 0 };
     },
-    closeSheet() { state.sheet = null; },
+    closeSheet() { if (state.sheet && state.sheet.type === "challenge" && stopResolved(currentStop())) state.anim = "stopdone"; state.sheet = null; },
     select(i) { if (state.sheet && !state.sheet.feedback) state.sheet.selected = i; },
     useHint() {
       const s = state.sheet; if (!s || s.hint || (s.feedback && !s.feedback.retry)) return;
@@ -131,6 +132,7 @@
     },
     nextChallenge() {
       const stop = currentStop();
+      if (stopResolved(stop)) state.anim = "stopdone";
       const next = challengesOf(stop).find((c) => !resolved(c.challengeId) && !c.optional) || challengesOf(stop).find((c) => !resolved(c.challengeId));
       if (next) A.openChallenge(next.challengeId); else state.sheet = null;
     },
@@ -199,7 +201,7 @@
     const doneCount = STOPS.filter((s) => state.stopStatus[s.locationId]).length;
     return `
       <div class="route">
-        <div class="label"><span><b>Stop ${Math.min(state.stopIdx + 1, STOPS.length)} of ${STOPS.length}</b></span><span>${doneCount} done</span></div>
+        <div class="label"><span><b>${state.huntDone ? "Completed all" : state.checkedIn[currentStop().locationId] ? "Completed Stop" : "On Stop"} ${Math.min(state.stopIdx + 1, STOPS.length)} of ${STOPS.length}</b></span></div>
         <div class="steps" role="progressbar" aria-valuenow="${doneCount}" aria-valuemax="${STOPS.length}">
           ${STOPS.map((s, i) => {
             const st = state.stopStatus[s.locationId];
@@ -210,8 +212,20 @@
       </div>`;
   }
 
-  function viewTravel(stop) {
+  function viewStopCard(stop, anim) {
+    const checked = !!state.checkedIn[stop.locationId];
     const walk = stop.walkMinutes > 0 ? `${I.walk}${stop.walkMinutes} min walk<span class="dot"></span>${stop.walkMiles} mi` : `${I.pin}Starting point`;
+    const required = challengesOf(stop).filter((c) => !c.optional).length;
+    const burst = anim === "checkin" ? `<span class="burst" aria-hidden="true">${Array.from({ length: 14 }, (_, i) => `<i style="--a:${Math.round(i * (360 / 14))}deg;--d:${44 + (i % 3) * 14}px;--c:${["#E87722", "#FDD264", "#6AAEAA"][i % 3]}"></i>`).join("")}</span>` : "";
+    let button, note;
+    if (checked) {
+      button = `<button class="btn checked ${anim === "checkin" ? "pop" : ""}" disabled>${I.check}Checked in${burst}</button>`;
+      note = `<p class="cta-note"><b class="earned-note ${anim === "checkin" ? "rise" : ""}">+${SCORING.checkIn} pts</b> · now the ${required} challenges below</p>`;
+    } else {
+      button = `<button class="btn primary" data-action="checkIn" ${state.arrived ? "" : "disabled"}>${I.check}Check in</button>`;
+      note = `<p class="cta-note">${state.arrived ? `Check in to unlock ${required} challenges and earn +${SCORING.checkIn} pts` : "Check in turns on when you are within 50 m of the stop."}</p>
+          <p class="cta-note"><button class="linkbtn" data-action="openSkipStop">Closed or can't get there? Skip this stop</button></p>`;
+    }
     return `
       <section class="card">
         <div class="stop-photo">
@@ -225,14 +239,15 @@
           <p class="lore ${state.loreOpen ? "" : "clamp"}">${esc(stop.description)}</p>
           <button class="linkbtn" data-action="toggleLore">${state.loreOpen ? "Less" : "Read more"}</button>
           <div class="btn-row">
-            ${state.arrived ? "" : `<button class="btn secondary" data-action="showMap">${I.nav}Directions</button>`}
-            <button class="btn primary" data-action="checkIn" ${state.arrived ? "" : "disabled"}>${I.check}${state.arrived ? "Check in" : "Check in"}</button>
+            ${state.arrived || checked ? "" : `<button class="btn secondary" data-action="showMap">${I.nav}Directions</button>`}
+            ${button}
           </div>
-          <p class="cta-note">${state.arrived ? `Check in to unlock ${challengesOf(stop).filter((c) => !c.optional).length} challenges and earn +${SCORING.checkIn} pts` : "Check in turns on when you are within 50 m of the stop."}</p>
-          <p class="cta-note"><button class="linkbtn" data-action="openSkipStop">Closed or can't get there? Skip this stop</button></p>
+          ${note}
         </div>
       </section>`;
   }
+
+  function viewTravel(stop, anim) { return viewStopCard(stop, anim); }
 
   function viewChallengeRow(c) {
     const r = state.results[c.challengeId];
@@ -251,29 +266,19 @@
       </button>`;
   }
 
-  function viewAtStop(stop) {
+  function viewAtStop(stop, anim) {
     const list = challengesOf(stop);
     const required = list.filter((c) => !c.optional);
     const doneCount = required.filter((c) => resolved(c.challengeId)).length;
     const complete = stopResolved(stop);
     return `
+      ${viewStopCard(stop, anim)}
       ${complete ? viewStopComplete(stop) : ""}
-      <section class="card">
-        <div class="stop-compact">
-          <img src="${stop.photo}" alt="">
-          <div>
-            <div class="sub">${I.check} Checked in · +${SCORING.checkIn} pts</div>
-            <h2>${esc(stop.name)}</h2>
-          </div>
-        </div>
-        <div class="card-body" style="padding-top:0">
-          <p class="lore ${state.loreOpen ? "" : "clamp"}" style="margin-top:0">${esc(stop.description)}</p>
-          <button class="linkbtn" data-action="toggleLore">${state.loreOpen ? "Less" : "Read more"}</button>
-        </div>
-      </section>
-      <div class="section-head"><h3>Challenges here</h3><span class="count">${doneCount} of ${required.length} done</span></div>
-      ${list.map(viewChallengeRow).join("")}
-      <div class="spacer-bottom"></div>`;
+      <div class="challenges ${anim === "checkin" ? "slide-in" : ""}">
+        <div class="section-head"><h3>Challenges here</h3><span class="count">${doneCount} of ${required.length} done</span></div>
+        ${list.map(viewChallengeRow).join("")}
+        <div class="spacer-bottom"></div>
+      </div>`;
   }
 
   function viewStopComplete(stop) {
@@ -317,12 +322,12 @@
       <div class="spacer-bottom"></div>`;
   }
 
-  function viewHunt() {
+  function viewHunt(anim) {
     const stop = currentStop();
     let body;
     if (state.huntDone) body = viewHuntDone();
-    else if (state.checkedIn[stop.locationId]) body = viewAtStop(stop);
-    else body = viewTravel(stop);
+    else if (state.checkedIn[stop.locationId]) body = viewAtStop(stop, anim);
+    else body = viewTravel(stop, anim);
     return `${viewTopbar()}<main class="screen">${viewRoute()}${body}</main>`;
   }
 
@@ -464,8 +469,11 @@
   function render() {
     const scrollEl = root.querySelector(".screen");
     const scrollTop = scrollEl ? scrollEl.scrollTop : 0;
-    root.innerHTML = viewHunt() + (state.view === "map" ? viewMap() : "") + viewSheet() + viewToast();
+    const anim = state.anim; state.anim = null;
+    root.innerHTML = viewHunt(anim) + (state.view === "map" ? viewMap() : "") + viewSheet() + viewToast();
     const s2 = root.querySelector(".screen"); if (s2) s2.scrollTop = scrollTop;
+    if (anim === "checkin") setTimeout(() => { const el = root.querySelector(".challenges"); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 900);
+    if (anim === "stopdone") setTimeout(() => { const el = root.querySelector(".celebrate"); if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 150);
     const input = root.querySelector("#answer"); if (input && !input.disabled && state.sheet && !state.sheet.feedback) input.focus({ preventScroll: true });
     updateDemoBar();
   }

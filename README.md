@@ -3,7 +3,8 @@
 Frontend developer project for Let's Roam. A review of the current hunt screen, a redesign, and a working demo.
 
 - **Live demo:** https://lets-roam-hunt.vercel.app
-- **Design review (what the screen must say, the principles, old vs new):** https://lets-roam-hunt.vercel.app/review-v2.html
+- **Design review (what the screen must say, the principles, old vs new):** https://lets-roam-hunt.vercel.app/review-v3.html
+- Earlier versions kept for reference: [v2](https://lets-roam-hunt.vercel.app/review-v2.html) (with the full comparison table)
 - **Screen-by-screen comments on the current design (v1):** https://lets-roam-hunt.vercel.app/review.html
 - **Written review with reasoning:** [DESIGN_REVIEW.md](./DESIGN_REVIEW.md)
 - **AI transcript:** [AI_CONVERSATION_TRANSCRIPT.md](./AI_CONVERSATION_TRANSCRIPT.md)
@@ -37,8 +38,9 @@ stands in for the GPS: **Simulate GPS: arrive**. In the app that event comes fro
 1. **Travel state.** One current-stop card: photo, "Next stop" badge, walk time, one-line lore, Directions and a
    Check in button that is disabled until you arrive, with the reason written under it. "Skip this stop" is always
    there for closed locations.
-2. **Check in.** Flat +500, confirmed inline. The challenges for that stop appear under the card with a word label
-   (Trivia, Photo, Fill in), points and state.
+2. **Check in.** Flat +500. The card stays put: the button pops into a teal "Checked in" with a burst of confetti, the
+   points land under it, and the challenges slide up from below so they read as part of this place. Each has a word
+   label (Trivia, Photo, Fill in), points and state.
 3. **Challenges.** One bottom sheet, never stacked. Multiple choice, fill-in and photo. Two tries, a hint that costs
    25 points, a free skip, then the answer is revealed and "Next challenge" moves on inside the same sheet.
 4. **Stop done.** A celebration card with the points earned, the fox, the next stop and its walk time, and
@@ -56,7 +58,8 @@ index.html        the demo page (phone frame + demo bar)
 app.js            the screen: one state object, one render(), named actions
 hunt-data.js      hunt content, same shape as the current app's HUNT_DATA
 styles.css        design-system tokens and components
-review-v2.html    design review: what the screen must say, principles, old vs new
+review-v3.html    design review: what the screen must say, principles, old vs new
+review-v2.html    v2: same, with a full comparison table
 review.html       v1: screen-by-screen comments on the current design
 DESIGN_REVIEW.md  the review, the changes, and what to measure
 assets/           fonts, mascot and ghost art, current-design screenshots
