@@ -16,6 +16,10 @@
     .cta a.primary { background: var(--lr-orange); color: #fff; }
     .cta a.secondary { background: #fff; color: var(--lr-black); box-shadow: inset 0 0 0 2px var(--lr-black); }
 
+    .hero { display: grid; grid-template-columns: 1fr minmax(240px, 300px); gap: 32px; align-items: center; margin-bottom: 48px; }
+    @media (max-width: 720px) { .hero { grid-template-columns: 1fr; } .hero-shot { order: -1; } }
+    .hero .cta { margin-bottom: 0; }
+    .hero-shot .cap { font-size: 13px; color: var(--lr-gray-3); font-weight: 600; text-align: center; margin: 10px 0 0; }
     .label { font-size: 13px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--lr-orange); margin: 0 0 8px; }
     h2 { font-size: 32px; letter-spacing: -0.04em; line-height: 1.05; margin: 0 0 18px; }
     section { margin-bottom: 56px; }
@@ -61,11 +65,16 @@
 </head>
 <body>
 <div class="wrap">
-  <h1>The hunt screen: what it needs to say</h1>
-  <p class="lead">People spend the whole walking tour on this one screen, usually in a group, outdoors, often at night.
-    Completion and satisfaction have dropped. Before touching pixels, this page sets out what the screen is for,
-    the rules the redesign follows, and then puts the old and new side by side.</p>
-  <div class="cta"><a class="primary" href="./index.html">Try the redesign</a><a class="secondary" href="https://github.com/mikeprimak/lets-roam-hunt">Source on GitHub</a></div>
+  <div class="hero">
+    <div class="hero-text">
+      <h1>The hunt screen: what it needs to say</h1>
+      <p class="lead">People spend the whole walking tour on this one screen, usually in a group, outdoors, often at night.
+        Completion and satisfaction have dropped. This page sets out what the screen is for, the rules the redesign
+        follows, and then puts the old and new side by side.</p>
+      <div class="cta"><a class="primary" href="./index.html">Try the redesign</a><a class="secondary" href="https://github.com/mikeprimak/lets-roam-hunt">Source on GitHub</a></div>
+    </div>
+    <div class="hero-shot"><div class="frame"><img src="./assets/redesign/start.png" alt="Redesigned hunt screen at the first stop: Check In and Start Tour"></div><p class="cap">The redesign, stop 1. One card, one button.</p></div>
+  </div>
 
   <section>
     <p class="label">Part one</p>
@@ -99,22 +108,21 @@
     <h2>Current screen vs redesign</h2>
 
     <div class="pair">
-      <h3>On the way to a stop</h3>
+      <h3>Starting the tour</h3>
       <div class="trio">
         <div class="shot"><span class="tag old">Current</span><div class="frame"><img src="./assets/current/screen-04.png" alt="Current main hunt screen"></div></div>
         <div class="notes">
           <p class="k">What changed</p>
           <ul>
-            <li>One stop, one button<small>not five identical cards and a toggle</small></li>
-            <li>"6 min walk", not "2.87 mi"</li>
-            <li>"On Stop 2 of 5"<small>replaces the ring, the rank and the ghost line</small></li>
-            <li>Score and time are small pills<small>rules moved to the help button</small></li>
-            <li>Check in unlocks on arrival<small>and says so in words</small></li>
+            <li>One stop, one button<small>"Check In &amp; Start Tour", not five identical cards and a toggle</small></li>
+            <li>"On Stop 1 of 5"<small>replaces the ring, the rank and the ghost line</small></li>
+            <li>Tour name and team in full<small>score, time and info stacked on the right</small></li>
+            <li>What the button does, in words<small>"Check in to earn +500 pts and see the challenges here"</small></li>
             <li>Closed? Skip the stop, keep points</li>
-            <li>Route bar is tappable<small>revisit a completed stop; a navy bar always leads back</small></li>
+            <li>Route bar is tappable<small>revisit or unskip a stop; a navy bar always leads back</small></li>
           </ul>
         </div>
-        <div class="shot"><span class="tag new">Redesign</span><div class="frame"><img src="./assets/redesign/next-stop.png" alt="Redesign, on the way to a stop"></div></div>
+        <div class="shot"><span class="tag new">Redesign</span><div class="frame"><img src="./assets/redesign/start.png" alt="Redesign, first stop"></div></div>
       </div>
     </div>
 
@@ -126,31 +134,30 @@
           <p class="k">What changed</p>
           <ul>
             <li>Same card, button turns "Checked in"<small>with a burst, the way a like button rewards you</small></li>
-            <li>"Next stop" appears right there<small>challenges are optional, the tour keeps moving</small></li>
-            <li>Challenges slide up under it<small>so they read as part of this place</small></li>
-            <li>Word labels: Trivia, Photo, Fill in<small>year questions get a wheel, wrong answers get one try and a small "Try again"</small></li>
+            <li>Next stop is right there<small>photo, walk time, address, one orange button</small></li>
+            <li>Challenges are optional<small>they slide up under the same card, named after the place</small></li>
+            <li>Word labels: Trivia, Photo, Fill in<small>year questions get a wheel; one try, small "Try again"; reopen any time</small></li>
             <li>No third sheet, no chips<small>"Completed Stop 1 of 5" up top</small></li>
           </ul>
         </div>
-        <div class="shot"><span class="tag new">Redesign</span><div class="frame"><img src="./assets/redesign/at-stop.png" alt="Redesign, checked in with the challenge list"></div></div>
+        <div class="shot"><span class="tag new">Redesign</span><div class="frame"><img src="./assets/redesign/at-stop.png" alt="Redesign, checked in with next stop and challenges"></div></div>
       </div>
     </div>
 
     <div class="pair">
-      <h3>After the stop</h3>
+      <h3>Between stops</h3>
       <div class="trio">
         <div class="shot"><span class="tag old">Current</span><div class="frame"><img src="./assets/current/screen-11.png" alt="Current location complete modal"></div></div>
         <div class="notes">
           <p class="k">What changed</p>
           <ul>
-            <li>Points first, then the next stop<small>with its walk time</small></li>
-            <li>One button: Let's go<small>not "Show Challenges"</small></li>
-            <li>Fox, no emoji</li>
-            <li>No score breakdown<small>the lore stays on the stop card</small></li>
-            <li>Card, not a modal<small>the screen underneath is still home</small></li>
+            <li>"Next stop" badge, "6 min walk", not "2.87 mi"</li>
+            <li>Directions, then Check in<small>check in unlocks on arrival and says so</small></li>
+            <li>No score breakdown, no modal<small>the screen underneath is still home</small></li>
+            <li>Fox and emoji gone from the flow<small>the fox waits for the finish</small></li>
           </ul>
         </div>
-        <div class="shot"><span class="tag new">Redesign</span><div class="frame"><img src="./assets/redesign/stop-done.png" alt="Redesign, stop done card with the next stop"></div></div>
+        <div class="shot"><span class="tag new">Redesign</span><div class="frame"><img src="./assets/redesign/next-stop.png" alt="Redesign, on the way to stop 2"></div></div>
       </div>
     </div>
 
