@@ -6,7 +6,7 @@ Frontend developer project for Let's Roam. A review of the current hunt screen, 
 - **Design review (what the screen must say, the principles, old vs new):** https://lets-roam-hunt.vercel.app/review-v3.html
 - Earlier versions kept for reference: [v2](https://lets-roam-hunt.vercel.app/review-v2.html) (with the full comparison table)
 - **Screen-by-screen comments on the current design (v1):** https://lets-roam-hunt.vercel.app/review.html
-- **Written review with reasoning:** [DESIGN_REVIEW.md](./DESIGN_REVIEW.md)
+- **Written review, with the decisions made while iterating:** [DESIGN_REVIEW.md](./DESIGN_REVIEW.md)
 - **AI transcript:** [AI_CONVERSATION_TRANSCRIPT.md](./AI_CONVERSATION_TRANSCRIPT.md)
 
 ## Run it

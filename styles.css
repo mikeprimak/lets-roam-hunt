@@ -288,7 +288,7 @@ img { display: block; max-width: 100%; }
 }
 .sheet.still, .scrim.still { animation: none; }
 .sheet-inner { display: flex; flex-direction: column; min-height: 0; }
-.sheet-inner.swap { animation: fade 180ms ease; }
+.sheet-inner.swap { animation: fade 340ms ease-out; }
 .sheet .grab { width: 40px; height: 4px; border-radius: 2px; background: var(--lr-gray-1); margin: 10px auto 0; }
 .sheet .sheet-head { display: flex; align-items: center; gap: 10px; padding: 10px 16px 6px; }
 .sheet .sheet-head .kind { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--lr-gray-3); flex: 1; }

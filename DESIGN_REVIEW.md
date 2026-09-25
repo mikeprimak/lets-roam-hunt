@@ -1,112 +1,138 @@
-# Design review: the current main hunt screen
+# Main Hunt Screen Redesign
 
-Screens reviewed: the Ghost Tour app flow (11 screens) and the `Lets-Roam-Hunt-Demo` export of the classic hunt
-components. The annotated version of this review is `review.html` (open it in a browser, or see the live link in
-the README).
+The purpose of this redesign is to improve completion rate and customer satisfaction rate for Let's Roam tours.
 
-The brief says completion rate and satisfaction have dropped. Everything below is judged against three questions
-a team on a walking tour asks over and over: **Where do we go? What do we do here? How are we doing?** The
-current screen answers the third question loudly and the first two quietly.
+The Main Hunt Screen and its associated user workflow is the core of the app and is the most important to completion
+rate and customer satisfaction.
 
-## The main hunt screen (screen 4)
+My design philosophy usually centers around **Clarity**. A visual interface that helps the user immediately understand
+"What do I do on this screen?" is good UI.
 
-**1. There is no "next action".** The screen is a dashboard: rank, points, a 0% ring, a "500 pts" chip, a "Map" chip,
-a four-item explainer of how points work, a toggle, then a list of locations that all look the same. Nothing says
-"go here now". A group standing on a pavement has to work out for themselves which card to tap. That is the
-first place people stall, and stalling on stop 1 is how a hunt gets abandoned.
+With Clarity in mind I approached the Main Hunt Screen redesign, using things like color, size, location, omission and
+other elements to focus the user on their next task: big orange buttons, very clear language, and all secondary info
+should be subservient to the main goals visually.
 
-**2. The top half is spent on status, not on the tour.** Rank, four header icons, the ghost progress line, the timer,
-the progress ring and the two chips take roughly 45% of the viewport before the first piece of hunt content. The
-ring reads "0% Complete" at the exact moment we want people to feel that this will be easy and fun.
+- Demo: https://lets-roam-hunt.vercel.app
+- This review as a page, with the screens side by side: https://lets-roam-hunt.vercel.app/review-v3.html
+- Earlier versions of the page, kept so the iteration is visible: [v1](https://lets-roam-hunt.vercel.app/review.html),
+  [v2](https://lets-roam-hunt.vercel.app/review-v2.html)
 
-**3. The countdown timer is the most prominent number on the screen (88:09).** It is not explained. What happens at
-zero? Is it a deadline or a bonus? Time pressure with no context makes people anxious, and anxious groups quit
-rather than "lose". The ghost-on-a-dotted-line beside it has no labels, so it is decoration.
+## What the main hunt screen needs to communicate
 
-**4. The "how points work" text is permanent UI.** "Complete Challenges Below & Earn Points By: Complete More
-Challenges, Accurate Check-Ins, Fun Accurate Photos, Finish Locations Quickly" is instructional copy that should be
-read once. Here it sits between the header and the content on every visit. It also introduces two ideas that
-hurt completion: check-in accuracy (which is GPS, not skill) and speed (which punishes the groups that are enjoying
-the tour).
+**Where do we go next?** The name of the next stop, a picture of it, its address, an estimated walk time, walking
+directions and a map.
 
-**5. "Show Ordered Locations" implies the list is unordered.** A tour has an order. Making the route an opt-in
-toggle invites people to wander to the nearest pin, which breaks the story a ghost tour is telling and makes the
-distance numbers meaningless.
+**What do we do when we get there?** The next action, whether it be checking in, enjoying the challenges or
+identifying the next location, should be clear and easy to understand.
 
-**6. Location cards are identical.** Photo, name, "Complete 5 challenges here", "0/5". No current/next/done state,
-no walking time, no sense that one of these is where you are standing. The distance is overlaid on the photo in
-white text ("2.87 mi away") with poor contrast, in miles to two decimals, which is not how people walk. "6 min walk"
-is.
+**Are we on track?** Reassurance that the users are on track and following the tour correctly. Users are less likely
+to give up when they feel they are doing it correctly.
 
-**7. The header has four unlabeled icons plus an unlabeled "≡" tab hanging off the right edge.** On a phone, with a
-group, in the dark, on a ghost tour, every unlabeled control is a support ticket.
+## Design philosophy
 
-**8. Points are big and meaningless.** 500, 892, 1,800, 2,300, 3,182. There is no scale to judge them against and
-"Rank: Top 50%" appears with 0 points. Numbers that cannot be interpreted cannot motivate.
+1. **Clarity First.** A group standing on a pavement should know what to do in one glance. Points, the gamification
+   and extras matter, but they must be secondary to clarity of the core flow.
+2. **One Next Action.** Every state of the screen has exactly one primary button: Directions, Check in, Submit,
+   Next stop.
+3. **Use Words.** Labels beat colour codes and icons alone. Plain English beats jargon.
+4. **Checking-In Is A Big Win.** Arriving is a core accomplishment for Let's Roamers, so the check-in itself gets the
+   celebration: the button pops, confetti, the points land, and "Next stop" appears right there.
 
-## Location detail, check-in and challenges (screens 5 to 11)
+## What I saw in the current screens
 
-**9. Sheets are stacked three deep.** Location sheet, then a check-in result modal on top of it, then the challenge
-list sheet, then a challenge modal over that (screen 9 shows a modal over a sheet over a dimmed screen). Each layer
-has its own close "X". It is easy to close the wrong one and lose your place. The main screen should be the place
-you always come back to, with at most one sheet over it.
+The Ghost Tour flow (eleven screens) and the exported classic hunt components, judged against the three questions
+above.
 
-**10. Check-in penalises the player for the phone's GPS.** "392 / 400 for Distance" (screen 7). The team did the
-right thing, walked to the stop and pressed the button, and lost points for something they cannot control. It
-reads as unfair, and unfair is the fastest route to a bad review.
+- **The main screen is a hub, not a flow.** Rank, four header icons, a countdown, a 0% ring, two chips, a four-line
+  explainer of how points work, a "Show Ordered Locations" toggle, then a list of identical location cards. Nothing
+  says "go here now". The next location is a pop-up sheet you only reach by tapping the right card.
+- **Status crowds out the tour.** The top half of the screen is score and progress. The countdown is the loudest
+  number and it is unexplained.
+- **The instructions are permanent.** "Earn points by: accurate check-ins, finish locations quickly" is read-once
+  copy shown on every visit, and it pushes two ideas that work against completion: GPS accuracy and speed.
+- **Sheets stack three deep.** Location sheet, check-in result modal, challenge list sheet, challenge modal, each
+  with its own close button.
+- **Check-in penalises the phone's GPS** ("392 / 400 for Distance") and the moment after a stop only offers "Show
+  Challenges", not "where next".
+- **Closed locations only get "Let us know".** A locked gate ends the hunt for most groups.
+- **Colour as meaning, no legend.** Orange, grey, yellow challenge tiles. Distance as "2.87 mi" in white over a photo.
+  Four typefaces, three icon sets, emoji in the score breakdown.
 
-**11. The moment after a stop is the biggest drop-off risk, and the screen does nothing with it.** "Location
-Complete!" (screen 11) shows a score breakdown and a paragraph of lore, then a button that says "Show Challenges".
-The natural next thought is "where next, how far?" and it is not there. Completion is a chain of five or six of
-these transitions. Every one that is not explicit is a place to leave.
+## The redesign, screen by screen
 
-**12. Closed locations only get "Let us know".** A locked gate at stop 3 currently ends the hunt for most groups.
-There is no "skip this stop, keep your points, here is the next one".
+### Starting the tour
 
-**13. Challenge tiles use colour as meaning without a legend.** Orange, grey, yellow, orange again (screen 8). Is it
-type? Difficulty? Points? The label should be a word: Trivia, Photo, Fill in.
+- **One main button.** "Check In & Start Tour" takes the user by the hand and says: do this. A single action, in the
+  brand orange, with nothing else on the screen competing for it.
+- **Tour and team names at the top**, keeping the overall task in focus. Score, time and info are stacked on the
+  right so the names always show in full.
+- **No loss state.** Users can skip a stop, unskip it, revisit a completed one and retry any challenge. Nothing is
+  irreversible, so there is no frustration or sense of failure, and they are free to explore the app.
 
-**14. Copy talks like a scoreboard, not a guide.** "Earn More Points by Finishing Challenges Faster!", "Legacy Ghost
-Capture", "You checked in 0 min 16 secs ago", "Location Score Breakdown". The brand voice in the design system is
-warm and direct ("Let's Go!", "Yes it is!"). The tour copy itself is lovely; the UI copy around it is not.
+### After checking in
 
-**15. Brand consistency.** Four typefaces (Circular, Jakarta, Alternate Gothic, Inter), three icon sets
-(FontAwesome, Simple Line Icons, emoji) and emoji in the score breakdown. The design system says one typeface,
-one icon style, no emoji. This is not just tidiness: mixed systems read as "unfinished", which lowers trust and
-satisfaction scores.
+- **Screen transforms into the checked-in state.** The card stays where it is. The check-in button animates and
+  indicates success, and the next stop appears (photo, walk time, address and a big orange button), keeping you
+  focused on moving forward.
+- **Optional challenges are visually below the mandatory next step.** They slide up under the same card, named after
+  the place. Visual hierarchy, so the user is clear what's really critical.
+- **Increased use of clarifying language.** Plain English everywhere, in small cues the user reads without noticing:
+  "Completed Stop 3 of 5", "3 optional challenges below", "6 min walk", "Trivia", "Photo", "Fill in". Every state of
+  the screen says what it is and what comes next, so it is very hard to be confused.
 
-**16. Small things that add up.** The magnifier glyph renders as "Q" in "Q2.88 mi away". A dashed "------" answer
-mask with no explanation. The hint ("The answer is 1 word") appears below the submit button. Grey 12px text on
-the check-in result.
+### En route
 
-## What the redesign does about it
+- **One flow, not a hub and spokes.** The current app is a list of locations plus a pop-up sheet for whichever one
+  you tap. The redesign is a single flow of screens, each with one big action that pulls you through to the next:
+  check in, next stop, directions, check in. The next stop is simply the next screen.
+- **Directions, then Check in.** Two buttons in the order you need them. Check in unlocks on arrival and says so in
+  words.
+- **Something preventing check-in?** Eliminate frustrating dead ends with an option to skip (can also be unskipped).
 
-| Problem | Change |
-| --- | --- |
-| No next action (1, 5, 6) | One **current stop card** fills the first screen: photo, "Next stop" / "You're here" badge, walk time, one primary button. Stops are in tour order. A five-segment route bar replaces the ring, ghost line and toggle. |
-| Status crowding the content (2, 7, 8) | Header is one row: team, score pill, time pill, help. No rank, no icon strip, no side tab. Score is still there, just not the hero. |
-| Timer anxiety (3) | Time shows as "1h 28m", turns red under 10 minutes, and is hidden entirely for untimed hunts (`timerLimitMinutes: 0`). No speed bonus. |
-| Permanent instructions (4, 14) | Points rules move to a **help sheet** (one tap, always available) written as a plain list. The screen itself explains what to do next in one line under the button: "Check in to unlock 3 challenges and earn +500 pts". |
-| Stacked sheets (9) | Exactly **one sheet layer**. Challenges open in a bottom sheet over the main screen; the result shows inside the same sheet; "Next challenge" advances without closing. Closing always returns to the main screen. |
-| GPS penalty (10) | Check-in is a flat +500 once you are within range. The button is disabled with a plain reason until then, and enables itself on arrival. |
-| The gap between stops (11) | When the last required challenge is done, a **"Stop done!" card** appears at the top with points earned, the fox, the **next stop with its walk time**, and "Let's go". This is the single change I would expect to move completion the most. |
-| Closed locations (12) | "Closed or can't get there? Skip this stop" on every stop, with a confirmation that says what you keep and what is next. Skipping a challenge is free too, so a stuck question never blocks a group. |
-| Colour as meaning (13) | Each challenge row has a word label (Trivia, Photo, Fill in), the question preview, the points and a done / skipped state. |
-| Brand (15, 16) | Plus Jakarta Sans only, design-system orange / cream / teal, pill buttons, 10px cards, 150ms transitions, Phosphor-style stroke icons, the Foxtrot mascot for celebrations, no emoji. |
+## Decisions made while iterating
+
+The first build was Claude's take on the brief. These are the calls I made on top of it while using the demo, in
+the order they came up. Each one is in the app now.
+
+1. Route label reads "On Stop 1 of 5", then "Completed Stop 1 of 5" the moment you check in. No "1 done" counter.
+2. Checking in is the reward. The button pops with a burst, like a like button, and the card stays put instead of
+   swapping to a different layout. The challenges slide up from below so they read as part of this place.
+3. Challenges are optional. After check-in the next-stop button appears right there, with a small photo, name, walk
+   time and address of the next location above it, in the brand orange. The "3 optional challenges below" note sits
+   under the Checked in button.
+4. Wording follows the event type: Tour, Hunt or Crawl. The first stop's button reads "Check In & Start Tour".
+5. Answers are type-specific: year questions get a scroll wheel. One try per question, then "Next challenge" with a
+   small "Try again" as an option. Skip goes straight to the next challenge. Any challenge can be reopened and
+   retried later.
+6. Descriptions show four lines before "Read more", and the button only appears when the text is actually clipped.
+7. The route bar is tappable. Completed stops can be revisited, with a navy bar and an orange button that both say
+   "Back to Stop 3" so nobody gets lost. Skipped stops can be unskipped. Stops ahead can't be tapped.
+8. The challenge list is titled after the place ("Pike Place Market Challenges"). When all are done a teal "All
+   challenges done here" strip appears; no second next-stop button, and no points total on the strip because it read
+   as a bonus.
+9. The tour name is the bold line at the top and the team name is under it. Score, time and info stack on the right
+   so both names show in full on a phone.
+10. The question mark opens a general info sheet: what the tour is, a short FAQ (do we have to do the challenges, the
+    button is greyed out, can we go back, is there a time limit, how do points work, what if we get lost), and the
+    "This stop is closed" and support actions.
+11. Sheets animate only when they open. After that the content fades in and out, slowly enough to feel human, and the
+    white card never moves.
+12. On a phone the frame fills the viewport exactly, so a bottom sheet is never partly below the screen.
 
 ## What I would measure after shipping
 
-Completion rate is the outcome. These are the leading indicators I would put in PostHog (or the existing analytics)
-so we know *why* it moved:
+Completion rate is the outcome. Leading indicators worth logging so we know *why* it moved:
 
-- `stop_completed` → `next_checkin` **time gap**, per stop. If the "Stop done" card works, this gap shrinks and fewer
-  sessions end between stops.
-- **Drop-off by stop index.** Today, if most abandons happen at stop 1, the problem is clarity; if at stop 3 or 4, it
-  is fatigue or closed locations.
-- `challenge_skipped` and `stop_skipped` with reason. Skips are cheap for us and save the session; a high skip rate on
-  one question is a content bug we can fix in the data.
-- `help_opened` per session. Should fall as the screen explains itself.
-- Time-to-first-check-in from hunt start.
-- Star rating prompt at the finish screen, so satisfaction is captured while the fox is still on screen.
+- Time between finishing a stop and checking in at the next one, per stop.
+- Drop-off by stop index. Stop 1 is a clarity problem; stop 3 or 4 is fatigue or closed locations.
+- Skips and unskips, per challenge and per stop. A high skip rate on one question is a content fix.
+- Info sheet opens per session; should fall.
+- A rating prompt on the finish screen, while the fox is still up.
 
-Ship it behind a flag to a percentage of new hunts and compare against the current screen for two weeks.
+Ship behind a flag to a share of new tours and compare for two weeks.
+
+## How it was built
+
+Plain HTML, CSS and JavaScript, no build step, in Claude Code. I directed; the AI wrote the code and the first draft
+of the critique, and I reworked the design and the argument through the iterations above. The full transcript is in
+`AI_CONVERSATION_TRANSCRIPT.md`.
