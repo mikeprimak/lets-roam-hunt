@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Let's Roam - Hunt screen redesign</title>
+  <meta name="description" content="Redesigned main hunt screen for Let's Roam scavenger hunt tours. Interactive demo.">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="demo-bar">
+    <strong>Redesign demo</strong>
+    <span class="hint">Walk through a stop: check in, answer challenges, move on.</span>
+    <span class="spacer"></span>
+    <button id="demo-arrive" class="primary">Simulate GPS: arrive</button>
+    <button id="demo-reset">Reset</button>
+    <a href="./review.html">Design review of the current screens</a>
+  </div>
+
+  <div class="phone">
+    <div id="app" class="app"></div>
+  </div>
+  <p class="demo-note">
+    Sample content, no live GPS, uploads or scoring writes. Arrival at a stop is simulated with the button above;
+    in the app it comes from the location watcher. Fonts, colours and radii are from the Let's Roam Design System.
+    <a href="https://github.com/mikeprimak/lets-roam-hunt">Source and README</a>
+  </p>
+
+  <script src="./hunt-data.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

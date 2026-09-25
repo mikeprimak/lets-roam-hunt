@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Let's Roam - Current hunt screen, annotated</title>
+  <link rel="stylesheet" href="./styles.css">
+  <style>
+    body { background: #F6F3EE; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 24px 16px 60px; }
+    h1 { font-size: 34px; letter-spacing: -0.04em; margin: 0 0 6px; }
+    .lead { font-size: 16px; color: var(--lr-gray-3); font-weight: 500; line-height: 1.6; max-width: 760px; margin: 0 0 8px; }
+    .lead a { color: var(--lr-black); }
+    .q { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0 28px; }
+    .q span { padding: 8px 14px; border-radius: 50px; background: var(--lr-off-orange); color: var(--lr-orange); font-weight: 700; font-size: 14px; }
+    .shot { display: grid; grid-template-columns: 300px 1fr; gap: 24px; align-items: start; margin-bottom: 44px; }
+    @media (max-width: 720px) { .shot { grid-template-columns: 1fr; } }
+    .frame { position: relative; border-radius: 22px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,.15); background: #000; }
+    .frame img { width: 100%; }
+    .pin {
+      position: absolute; width: 26px; height: 26px; margin: -13px 0 0 -13px; border-radius: 50%;
+      background: var(--lr-orange); color: #fff; font-weight: 800; font-size: 13px; display: grid; place-items: center;
+      box-shadow: 0 0 0 3px #fff, 0 2px 8px rgba(0,0,0,.4); cursor: default;
+    }
+    .notes h2 { font-size: 22px; letter-spacing: -0.03em; margin: 0 0 4px; }
+    .notes .sub { font-size: 13px; color: var(--lr-gray-3); font-weight: 600; margin: 0 0 14px; }
+    .note { display: flex; gap: 12px; padding: 12px 14px; background: #fff; border-radius: 10px; box-shadow: var(--shadow-card); margin-bottom: 8px; }
+    .note .n { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--lr-orange); color: #fff; font-weight: 800; font-size: 13px; display: grid; place-items: center; }
+    .note p { margin: 0; font-size: 14.5px; line-height: 1.55; font-weight: 500; }
+    .note b { font-weight: 700; }
+    .note .fix { display: block; margin-top: 4px; color: #2F6B67; font-weight: 600; }
+    .strip { display: block; margin: 0 0 30px; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-card); background: #222; padding: 0; }
+    .strip img { width: 100%; }
+    .cta { display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0 30px; }
+    .cta a { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 50px; font-weight: 700; text-decoration: none; font-size: 15px; }
+    .cta a.primary { background: var(--lr-orange); color: #fff; }
+    .cta a.secondary { background: #fff; color: var(--lr-black); box-shadow: inset 0 0 0 2px var(--lr-black); }
+    table { border-collapse: collapse; width: 100%; font-size: 14px; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow-card); }
+    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--lr-gray-light); vertical-align: top; font-weight: 500; }
+    th { font-weight: 700; background: var(--lr-off-orange); }
+    h3 { font-size: 20px; letter-spacing: -0.03em; margin: 30px 0 10px; }
+    ul.plain { font-size: 14.5px; line-height: 1.6; font-weight: 500; padding-left: 20px; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>The current hunt screen, annotated</h1>
+  <p class="lead">Comments on the Ghost Tour flow you sent, judged against the three questions a team asks on a walking tour.
+    The full write-up is <a href="https://github.com/mikeprimak/lets-roam-hunt/blob/main/DESIGN_REVIEW.md">DESIGN_REVIEW.md</a>.</p>
+  <div class="q"><span>Where do we go?</span><span>What do we do here?</span><span>How are we doing?</span></div>
+  <div class="cta"><a class="primary" href="./index.html">Open the redesign demo</a><a class="secondary" href="https://github.com/mikeprimak/lets-roam-hunt">Source on GitHub</a></div>
+
+  <a class="strip" href="./assets/current/ghost-tour-app-flow.png" target="_blank"><img src="./assets/current/ghost-tour-app-flow.png" alt="All eleven current screens"></a>
+
+  <!-- Main hunt screen -->
+  <section class="shot">
+    <div class="frame">
+      <img src="./assets/current/screen-04.png" alt="Current main hunt screen">
+      <span class="pin" style="left:50%;top:12%">1</span>
+      <span class="pin" style="left:62%;top:18%">2</span>
+      <span class="pin" style="left:50%;top:33%">3</span>
+      <span class="pin" style="left:50%;top:53%">4</span>
+      <span class="pin" style="left:50%;top:61%">5</span>
+      <span class="pin" style="left:60%;top:70%">6</span>
+      <span class="pin" style="left:12%;top:72%">7</span>
+      <span class="pin" style="left:96%;top:42%">8</span>
+    </div>
+    <div class="notes">
+      <h2>Main hunt screen</h2>
+      <p class="sub">This is the screen people spend the whole tour on.</p>
+      <div class="note"><span class="n">1</span><p><b>Header is status, not tour.</b> Rank, points, four unlabeled icons. Rank "Top 50%" at 0 pts means nothing yet.<span class="fix">Redesign: one row, team + score + time + help.</span></p></div>
+      <div class="note"><span class="n">2</span><p><b>The countdown is the loudest number on screen</b> and it is unexplained. Deadline or bonus? Anxiety without a reason makes groups quit rather than "lose". The ghost line beside it has no labels.<span class="fix">Redesign: "1h 28m", red under 10 min, hidden when a hunt is untimed. No speed bonus.</span></p></div>
+      <div class="note"><span class="n">3</span><p><b>"0% Complete" ring plus two chips</b> take a third of the viewport at the exact moment we want people to feel this will be easy.<span class="fix">Redesign: five-segment route bar, "Stop 1 of 5".</span></p></div>
+      <div class="note"><span class="n">4</span><p><b>Permanent instructions.</b> "Earn points by: accurate check-ins, finish locations quickly" is read-once copy shown on every visit, and it introduces two ideas that hurt completion (GPS accuracy, speed).<span class="fix">Redesign: plain-language rules in a help sheet; one line of "what next" under the button.</span></p></div>
+      <div class="note"><span class="n">5</span><p><b>"Show Ordered Locations" implies the list is unordered.</b> A tour has an order; making it opt-in invites wandering and breaks the story.<span class="fix">Redesign: stops are in order, always.</span></p></div>
+      <div class="note"><span class="n">6</span><p><b>Every location card looks the same.</b> No current / next / done state, no walk time, nothing says "go here now". This is the stall point.<span class="fix">Redesign: one current-stop card with "Next stop", walk time and a single primary button.</span></p></div>
+      <div class="note"><span class="n">7</span><p><b>"2.87 mi away" in white over a photo.</b> Low contrast, and two-decimal miles is not how people walk.<span class="fix">Redesign: "6 min walk · 0.3 mi" as text on a white card.</span></p></div>
+      <div class="note"><span class="n">8</span><p><b>An unlabeled "≡" tab off the right edge.</b> In the dark, in a group, every unlabeled control is a support chat.<span class="fix">Redesign: removed; help is a labeled button.</span></p></div>
+    </div>
+  </section>
+
+  <!-- Location + check in -->
+  <section class="shot">
+    <div class="frame">
+      <img src="./assets/current/screen-05.png" alt="Location sheet with map">
+      <span class="pin" style="left:20%;top:21%">1</span>
+      <span class="pin" style="left:66%;top:40%">2</span>
+      <span class="pin" style="left:50%;top:88%">3</span>
+      <span class="pin" style="left:50%;top:94%">4</span>
+    </div>
+    <div class="notes">
+      <h2>Location sheet</h2>
+      <p class="sub">Screens 5 and 6</p>
+      <div class="note"><span class="n">1</span><p><b>"Q2.88 mi away"</b>: the magnifier glyph is rendering as a letter. Small, but it is the first thing on the sheet.</p></div>
+      <div class="note"><span class="n">2</span><p><b>A map that only says "This location".</b> No route, no "you are here", no walk time. The map is the one place a lost group looks.<span class="fix">Redesign: route map with numbered stops, done / current states, your position, and "Open in Maps".</span></p></div>
+      <div class="note"><span class="n">3</span><p><b>"Check In" is the right idea</b> but it is always enabled, so people press it early and get a distance penalty (next screen).<span class="fix">Redesign: disabled with a plain reason until you are within range, then enables itself.</span></p></div>
+      <div class="note"><span class="n">4</span><p><b>"Location closed? Let us know."</b> is the only exit for a locked gate, and it ends the hunt for most groups.<span class="fix">Redesign: "Skip this stop" keeps your points and shows the next stop.</span></p></div>
+    </div>
+  </section>
+
+  <section class="shot">
+    <div class="frame">
+      <img src="./assets/current/screen-07.png" alt="Check-in result modal">
+      <span class="pin" style="left:50%;top:45%">1</span>
+      <span class="pin" style="left:50%;top:86%">2</span>
+    </div>
+    <div class="notes">
+      <h2>Check-in result</h2>
+      <p class="sub">Screen 7</p>
+      <div class="note"><span class="n">1</span><p><b>A modal on top of the location sheet.</b> Second layer, second close button. Where does "X" take me?<span class="fix">Redesign: the check-in confirms inline on the main screen with a toast; the challenges appear right below.</span></p></div>
+      <div class="note"><span class="n">2</span><p><b>"392 / 400 for Distance."</b> The team walked to the stop and pressed the button, and lost points for the phone's GPS. It reads as unfair, and unfair is the fastest way to a bad rating. Also: emoji as icons, against the brand guide.<span class="fix">Redesign: flat +500 for checking in. No emoji.</span></p></div>
+    </div>
+  </section>
+
+  <section class="shot">
+    <div class="frame">
+      <img src="./assets/current/screen-08.png" alt="Challenge list sheet">
+      <span class="pin" style="left:50%;top:36%">1</span>
+      <span class="pin" style="left:50%;top:41%">2</span>
+      <span class="pin" style="left:12%;top:60%">3</span>
+      <span class="pin" style="left:50%;top:94%">4</span>
+    </div>
+    <div class="notes">
+      <h2>Challenge list</h2>
+      <p class="sub">Screen 8</p>
+      <div class="note"><span class="n">1</span><p><b>Three chips, "Map · 1,800 pts · 0/5 Challenges"</b>, in a third sheet layer. The main screen already had this information.<span class="fix">Redesign: challenges live on the main screen under the stop card, "0 of 3 done".</span></p></div>
+      <div class="note"><span class="n">2</span><p><b>"Earn More Points by Finishing Challenges Faster!"</b> Speed pressure again, in bold, in the brand's marketing voice rather than a guide's.</p></div>
+      <div class="note"><span class="n">3</span><p><b>Colour as meaning with no legend.</b> Orange, grey, yellow, orange. Type? Difficulty? Points?<span class="fix">Redesign: a word label per row (Trivia, Photo, Fill in) plus points and a done state.</span></p></div>
+      <div class="note"><span class="n">4</span><p><b>"You checked in 0 min 16 secs ago."</b> Developer copy. Nobody needs this on the tour.</p></div>
+    </div>
+  </section>
+
+  <section class="shot">
+    <div class="frame">
+      <img src="./assets/current/screen-09.png" alt="Challenge modal">
+      <span class="pin" style="left:50%;top:30%">1</span>
+      <span class="pin" style="left:30%;top:57%">2</span>
+      <span class="pin" style="left:50%;top:72%">3</span>
+      <span class="pin" style="left:50%;top:92%">4</span>
+    </div>
+    <div class="notes">
+      <h2>Answering a challenge</h2>
+      <p class="sub">Screen 9</p>
+      <div class="note"><span class="n">1</span><p><b>Modal over sheet over dimmed screen.</b> Three layers deep now. The dimmed list behind still shows its own close button.<span class="fix">Redesign: one sheet. Result shows inside it, "Next challenge" advances without closing, "Done" returns to the main screen.</span></p></div>
+      <div class="note"><span class="n">2</span><p><b>A "Map" button inside a trivia question.</b> Why would I leave the question for the map?</p></div>
+      <div class="note"><span class="n">3</span><p><b>"------" with no explanation</b>, and no way to know how many tries you get.<span class="fix">Redesign: "2 tries", "Not quite. 1 try left", then the answer is revealed and you move on. Nothing blocks the group.</span></p></div>
+      <div class="note"><span class="n">4</span><p><b>The hint is below the submit button</b>, after the input, and costs nothing, so it is neither discoverable nor a choice.<span class="fix">Redesign: "Use a hint (−25 pts)" beside "Skip this one", above the fold of the sheet.</span></p></div>
+    </div>
+  </section>
+
+  <section class="shot">
+    <div class="frame">
+      <img src="./assets/current/screen-11.png" alt="Location complete">
+      <span class="pin" style="left:50%;top:58%">1</span>
+      <span class="pin" style="left:50%;top:92%">2</span>
+    </div>
+    <div class="notes">
+      <h2>Location complete</h2>
+      <p class="sub">Screen 11. The biggest drop-off risk on the tour.</p>
+      <div class="note"><span class="n">1</span><p><b>A score breakdown with emoji, then a paragraph of lore.</b> "Check-in: 892, Challenges: 1,790/2,400, Location Speed Bonus: 500/500". Numbers without a scale do not motivate; the lore is good but it is the wrong moment for reading.</p></div>
+      <div class="note"><span class="n">2</span><p><b>The only button is "Show Challenges".</b> The team has just finished. Their next thought is "where next, how far?" and it is not on the screen. Completion is a chain of five of these transitions and every one that is not explicit is a place to leave.<span class="fix">Redesign: "Moore Theatre done! +1,290" with the fox, then "Next stop: Butterworth Building · 4 min walk" and one button, "Let's go".</span></p></div>
+    </div>
+  </section>
+
+  <h3>Where I would look for the numbers</h3>
+  <ul class="plain">
+    <li>Time gap between <code>stop_completed</code> and the next <code>check_in</code>, per stop. The "Stop done" card should shrink it.</li>
+    <li>Drop-off by stop index. Stop 1 means clarity; stop 3 or 4 means fatigue or closed locations.</li>
+    <li>Skips per challenge (content bugs show up here) and per stop (closed-location signal).</li>
+    <li>Help sheet opens per session; should fall.</li>
+    <li>A rating prompt on the finish screen so satisfaction is captured while the fox is still up.</li>
+  </ul>
+  <p class="lead">Ship behind a flag to a share of new hunts and compare for two weeks.</p>
+</div>
+</body>
+</html>
