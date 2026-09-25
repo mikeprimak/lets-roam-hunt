@@ -208,11 +208,11 @@
       <header class="topbar">
         <div class="team">
           <img src="${team.groupPhoto}" alt="">
-          <div><div class="name">${esc(team.teamName)}</div><div class="hunt">${esc(G.huntName)}</div></div>
+          <div><div class="name">${esc(G.huntName)}</div><div class="hunt">Team ${esc(team.teamName)}</div></div>
         </div>
         <span class="pill score ${bump ? "bump" : ""}" aria-label="Team score">${I.bolt}<span id="score">${fmtPts(state.score)}</span></span>
         ${IS_TIMED ? `<span class="pill time ${state.timeLeft < 600 ? "low" : ""}" aria-label="Time left">${I.clock}<span id="time">${fmtTime(state.timeLeft)}</span></span>` : ""}
-        <button class="pill icon-only" data-action="openHelp" aria-label="Help and how points work">${I.help}</button>
+        <button class="pill icon-only" data-action="openHelp" aria-label="Info and help">${I.help}</button>
       </header>`;
   }
 
@@ -305,9 +305,9 @@
     const complete = stopResolved(stop);
     return `
       ${viewStopCard(stop, anim)}
-      ${complete ? viewStopComplete(stop) : ""}
       <div class="challenges ${anim === "checkin" ? "slide-in" : ""}">
-        <div class="section-head"><h3>Challenges here</h3><span class="count">Optional · ${doneCount} of ${required.length} done</span></div>
+        <div class="section-head"><h3>${esc(stop.name)} Challenges</h3><span class="count">${doneCount} of ${required.length} done</span></div>
+        ${complete ? `<div class="strip teal all-done">${I.check}<span>All challenges done here</span><span class="pts">+${fmtPts(challengesOf(stop).reduce((n, c) => n + ((state.results[c.challengeId] || {}).points || 0), 0))} pts</span></div>` : ""}
         ${list.map(viewChallengeRow).join("")}
         <div class="spacer-bottom"></div>
       </div>`;
@@ -431,12 +431,25 @@
       </div>`;
   }
 
+  const FAQ = () => [
+    [`How does a Let's Roam ${event} work?`, `Your team walks a route of ${STOPS.length} stops in order. At each one you check in on this screen, read the story, and try the challenges if you like. When you're ready, tap Next stop and the app walks you to the next one.`],
+    ["Do we have to do the challenges?", "No. Checking in is what moves you forward. Challenges are extra points and extra fun. Skip any, come back to any, nothing you skip costs points."],
+    ["The Check in button is greyed out.", "It turns on by itself when your phone is within about 50 m of the stop. Walk a little closer or wait a few seconds for the GPS. If a place is closed or you can't reach it, use \"This stop is closed\" below and you keep your points."],
+    ["Can we go back to an earlier stop?", "Yes. Tap any completed stop in the bar under the title. You'll see a \"Back to Stop\" button to return to where you left off."],
+    ["Is there a time limit?", IS_TIMED ? `This ${event} has ${G.timerLimitMinutes} minutes. The clock at the top shows what's left and turns red in the last ten. Running out just ends the ${event}; you keep everything you earned.` : `No. Take as long as you like.`],
+    ["What if we get lost?", "Tap Directions on the stop card for a map of the whole route, or open it in your phone's Maps app."],
+    ["Something is wrong with the app.", "Use Chat with support below. A real person answers during tour hours."]
+  ];
   function viewHelpSheet() {
     return `
-      <div class="sheet-head"><span class="kind">How points work</span><button class="iconbtn" data-action="closeSheet" aria-label="Close">${I.x}</button></div>
+      <div class="sheet-head"><span class="kind">Info &amp; help</span><button class="iconbtn" data-action="closeSheet" aria-label="Close">${I.x}</button></div>
       <div class="sheet-body">
+        <h2 style="margin-top:0">${esc(G.huntName)}</h2>
+        <p class="lore" style="margin-top:0">${STOPS.length} stops · about ${STOPS.reduce((n, x) => n + x.walkMinutes, 0)} min of walking${IS_TIMED ? ` · ${G.timerLimitMinutes} min limit` : ""}. Check in at each stop, enjoy the story, do the challenges you like, and tap Next stop.</p>
+        <h3 class="sheet-h3">Questions</h3>
+        <div class="faq">${FAQ().map(([qq, aa]) => `<details><summary>${esc(qq)}<span class="chev">${I.chevron}</span></summary><p>${aa}</p></details>`).join("")}</div>
+        <h3 class="sheet-h3">How points work</h3>
         <ul class="rules">${SCORING.rules.map(([k, v]) => `<li><span>${esc(k)}</span><b class="${v.startsWith("-") || v.startsWith("0") ? "neg" : ""}">${esc(v)}</b></li>`).join("")}</ul>
-        <p class="lore">Stops go in order. Checking in is what moves the ${event} forward; the challenges at each stop are optional extras. You can skip any challenge, or a whole stop if it is closed. Nothing you skip costs points.</p>
         <div class="help-actions">
           <button class="btn secondary" data-action="openSkipStop">${I.flag}This stop is closed</button>
           <button class="btn ghost" data-action="support">${I.help}Chat with support</button>
@@ -514,7 +527,7 @@
     root.innerHTML = viewHunt(anim) + (state.view === "map" ? viewMap() : "") + viewSheet() + viewToast();
     const s2 = root.querySelector(".screen"); if (s2) s2.scrollTop = scrollTop;
     if (anim === "checkin") setTimeout(() => { const el = root.querySelector(".challenges"); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 900);
-    if (anim === "stopdone") setTimeout(() => { const el = root.querySelector(".celebrate"); if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 150);
+    if (anim === "stopdone") setTimeout(() => { const el = root.querySelector(".all-done"); if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 150);
     const input = root.querySelector("#answer"); if (input && !input.disabled && state.sheet && !state.sheet.feedback) input.focus({ preventScroll: true });
     const wheel = root.querySelector("#wheel");
     if (wheel) {
