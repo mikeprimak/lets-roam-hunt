@@ -230,7 +230,7 @@
     const doneCount = STOPS.filter((s) => state.stopStatus[s.locationId]).length;
     return `
       <div class="route">
-        <div class="label"><span><b>${isRevisit() ? "Viewing Stop" : state.huntDone ? "Completed all" : state.checkedIn[currentStop().locationId] ? "Completed Stop" : "On Stop"} ${shownIdx() + 1} of ${STOPS.length}</b></span><span class="tap-hint">Tap a stop to revisit it</span></div>
+        <div class="label"><span><b>${isRevisit() ? "Viewing Stop" : state.huntDone ? "Completed all" : state.checkedIn[currentStop().locationId] ? "Completed Stop" : "On Stop"} ${shownIdx() + 1} of ${STOPS.length}</b></span></div>
         <div class="steps" role="tablist" aria-label="Stops">
           ${STOPS.map((s, i) => {
             const st = state.stopStatus[s.locationId];
@@ -447,6 +447,7 @@
     ["The Check in button is greyed out.", "It turns on by itself when your phone is within about 50 m of the stop. Walk a little closer or wait a few seconds for the GPS. If a place is closed or you can't reach it, use \"This stop is closed\" below and you keep your points."],
     ["Can we go back to an earlier stop?", "Yes. Tap any completed stop in the bar under the title. You'll see a \"Back to Stop\" button to return to where you left off."],
     ["Is there a time limit?", IS_TIMED ? `This ${event} has ${G.timerLimitMinutes} minutes. The clock at the top shows what's left and turns red in the last ten. Running out just ends the ${event}; you keep everything you earned.` : `No. Take as long as you like.`],
+    ["How do points work?", `<ul class="rules">${SCORING.rules.map(([k, v]) => `<li><span>${esc(k)}</span><b class="${v.startsWith("-") || v.startsWith("0") ? "neg" : ""}">${esc(v)}</b></li>`).join("")}</ul>`],
     ["What if we get lost?", "Tap Directions on the stop card for a map of the whole route, or open it in your phone's Maps app."],
     ["Something is wrong with the app.", "Use Chat with support below. A real person answers during tour hours."]
   ];
@@ -457,9 +458,7 @@
         <h2 style="margin-top:0">${esc(G.huntName)}</h2>
         <p class="lore" style="margin-top:0">${STOPS.length} stops · about ${STOPS.reduce((n, x) => n + x.walkMinutes, 0)} min of walking${IS_TIMED ? ` · ${G.timerLimitMinutes} min limit` : ""}. Check in at each stop, enjoy the story, do the challenges you like, and tap Next stop.</p>
         <h3 class="sheet-h3">Questions</h3>
-        <div class="faq">${FAQ().map(([qq, aa]) => `<details><summary>${esc(qq)}<span class="chev">${I.chevron}</span></summary><p>${aa}</p></details>`).join("")}</div>
-        <h3 class="sheet-h3">How points work</h3>
-        <ul class="rules">${SCORING.rules.map(([k, v]) => `<li><span>${esc(k)}</span><b class="${v.startsWith("-") || v.startsWith("0") ? "neg" : ""}">${esc(v)}</b></li>`).join("")}</ul>
+        <div class="faq">${FAQ().map(([qq, aa]) => `<details><summary>${esc(qq)}<span class="chev">${I.chevron}</span></summary>${aa.startsWith("<ul") ? aa : `<p>${aa}</p>`}</details>`).join("")}</div>
         <div class="help-actions">
           <button class="btn secondary" data-action="openSkipStop">${I.flag}This stop is closed</button>
           <button class="btn ghost" data-action="support">${I.help}Chat with support</button>

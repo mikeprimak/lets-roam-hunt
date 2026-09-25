@@ -221,6 +221,8 @@ img { display: block; max-width: 100%; }
 .faq summary::-webkit-details-marker { display: none; }
 .faq summary .chev { margin-left: auto; width: 18px; height: 18px; color: var(--lr-gray-2); transition: transform var(--ease); flex: none; }
 .faq details[open] summary .chev { transform: rotate(90deg); }
+.faq .rules { margin: 0 14px 6px; }
+.faq .rules li { border-bottom-color: var(--lr-gray-1); }
 .faq p { margin: 0; padding: 0 14px 12px; font-size: 14px; line-height: 1.55; font-weight: 500; color: var(--lr-gray-4); }
 
 /* Challenge list */

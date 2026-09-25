@@ -56,8 +56,8 @@ stands in for the GPS: **Simulate GPS: arrive**. In the app that event comes fro
 7. **Finish.** Score, stops, challenges, time, team photo and share.
 
 The info sheet (question mark, top right) explains the tour in a paragraph, answers the basic questions (do we have
-to do the challenges, the button is greyed out, can we go back, is there a time limit, what if we get lost), lists
-how points work, and has the "This stop is closed" and support actions.
+to do the challenges, the button is greyed out, can we go back, is there a time limit, how do points work, what if we
+get lost), and has the "This stop is closed" and support actions.
 
 ## Files
 
