@@ -101,7 +101,7 @@ img { display: block; max-width: 100%; }
 .route { background: #fff; padding: 4px 16px 14px; border-bottom: 1px solid var(--lr-gray-light); }
 .route .label { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--lr-gray-3); margin-bottom: 8px; }
 .route .label b { color: var(--lr-black); }
-.route .steps { display: flex; gap: 6px; }
+.route .steps { display: flex; gap: 6px; padding-bottom: 6px; }
 .route .step {
   flex: 1; height: 8px; border-radius: 4px; background: var(--lr-gray-light); position: relative;
   border: 0; padding: 0; transition: background var(--ease);
@@ -112,6 +112,20 @@ img { display: block; max-width: 100%; }
   content: ""; position: absolute; inset: -3px; border-radius: 7px; border: 2px solid var(--lr-orange); opacity: .35;
 }
 .route .step.skipped { background: var(--lr-gray-2); }
+.route .step.tappable { cursor: pointer; }
+.route .step.tappable:hover { filter: brightness(.92); }
+.route .step.shown::before { content: ""; position: absolute; left: 50%; bottom: -9px; width: 0; height: 0; margin-left: -5px; border: 5px solid transparent; border-bottom-color: var(--lr-gray-4); }
+.route .step:not(.tappable) { cursor: default; }
+.route .label .tap-hint { font-weight: 600; color: var(--lr-gray-2); }
+.revisit-bar {
+  display: flex; align-items: center; gap: 10px; margin: 12px 12px 0; padding: 10px 12px 10px 14px; border-radius: var(--radius-card);
+  background: var(--lr-navy); color: #fff; font-size: 13px; font-weight: 700;
+}
+.revisit-bar svg { width: 18px; height: 18px; flex: none; }
+.revisit-bar span { flex: 1; }
+.revisit-bar .btn { background: #fff; color: var(--lr-navy); padding: 9px 12px; font-size: 13px; white-space: nowrap; }
+.revisit-bar .btn svg { width: 16px; height: 16px; }
+.stop-photo .badge.done { background: var(--lr-teal); }
 
 /* Generic card */
 .card {

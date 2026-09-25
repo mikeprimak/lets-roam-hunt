@@ -48,8 +48,11 @@ stands in for the GPS: **Simulate GPS: arrive**. In the app that event comes fro
    goes straight to the next one. Any challenge can be reopened later to try again.
 4. **Stop done.** A celebration card with the points earned, the fox, the next stop and its walk time, and
    "Let's go". This is the transition the current design leaves empty.
-5. **Map.** Route with numbered stops, done / current states and your position. Stylised, not real tiles.
-6. **Finish.** Score, stops, challenges, time, team photo and share.
+5. **Revisit a stop.** The route bar under "On Stop 2 of 5" is tappable. Tapping a completed stop shows it with a
+   "Completed" badge, its challenges still open, and a navy bar plus an orange button that both say "Back to Stop 3",
+   so a team that tapped ahead too early (or back by accident) is never lost. Stops ahead are not tappable.
+6. **Map.** Route with numbered stops, done / current states and your position. Stylised, not real tiles.
+7. **Finish.** Score, stops, challenges, time, team photo and share.
 
 The help sheet (question mark, top right) lists how points work in plain language and has the "This stop is closed"
 and support actions.

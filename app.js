@@ -27,7 +27,8 @@
     huntDone: false,
     toast: null,
     loreOpen: false,
-    anim: null                // one-shot animation flag, consumed by the next render
+    anim: null,               // one-shot animation flag, consumed by the next render
+    viewIdx: null             // stop shown on screen when revisiting a completed one; null = the active stop
   });
   let state = initial();
 
@@ -41,6 +42,9 @@
   const kindLabel = { multiple_choice: "Trivia", text: "Fill in", photo: "Photo" };
   const kindIcon = { multiple_choice: "question", text: "pencil", photo: "camera" };
   const currentStop = () => STOPS[state.stopIdx];
+  const shownIdx = () => (state.viewIdx == null ? state.stopIdx : state.viewIdx);
+  const shownStop = () => STOPS[shownIdx()];
+  const isRevisit = () => state.viewIdx != null && state.viewIdx !== state.stopIdx;
   const nextStop = () => STOPS[state.stopIdx + 1] || null;
   const challengesOf = (stop) => stop.challengeList.map((id) => G.allChallenges[id]);
   const resolved = (id) => !!state.results[id];
@@ -92,7 +96,7 @@
         delete state.results[id];   // wrong or skipped: open it fresh to try again
       }
     },
-    closeSheet() { if (state.sheet && state.sheet.type === "challenge" && stopResolved(currentStop())) state.anim = "stopdone"; state.sheet = null; },
+    closeSheet() { if (state.sheet && state.sheet.type === "challenge" && stopResolved(shownStop())) state.anim = "stopdone"; state.sheet = null; },
     select(i) { if (state.sheet && !state.sheet.feedback) state.sheet.selected = i; },
     useHint() {
       const s = state.sheet; if (!s || s.hint || s.feedback) return;
@@ -138,7 +142,7 @@
       A.nextChallenge();
     },
     nextChallenge() {
-      const stop = currentStop();
+      const stop = shownStop();
       if (stopResolved(stop)) state.anim = "stopdone";
       const next = challengesOf(stop).find((c) => !resolved(c.challengeId) && !c.optional) || challengesOf(stop).find((c) => !resolved(c.challengeId));
       if (next) A.openChallenge(next.challengeId); else state.sheet = null;
@@ -157,8 +161,16 @@
       toast(`Skipped ${stop.name}`, "flag");
       A.advance();
     },
+    viewStop(i) {
+      i = Number(i);
+      if (i > state.stopIdx) { toast(`Check in at ${currentStop().name} first`, "pin"); return; }
+      state.viewIdx = i === state.stopIdx && !state.huntDone ? null : i;
+      state.loreOpen = false;
+    },
+    backToCurrent() { state.viewIdx = null; state.loreOpen = false; },
     advance() {
       state.loreOpen = false;
+      state.viewIdx = null;
       if (state.stopIdx + 1 >= STOPS.length) { state.huntDone = true; return; }
       state.stopIdx += 1;
       state.arrived = false;
@@ -208,12 +220,13 @@
     const doneCount = STOPS.filter((s) => state.stopStatus[s.locationId]).length;
     return `
       <div class="route">
-        <div class="label"><span><b>${state.huntDone ? "Completed all" : state.checkedIn[currentStop().locationId] ? "Completed Stop" : "On Stop"} ${Math.min(state.stopIdx + 1, STOPS.length)} of ${STOPS.length}</b></span></div>
-        <div class="steps" role="progressbar" aria-valuenow="${doneCount}" aria-valuemax="${STOPS.length}">
+        <div class="label"><span><b>${isRevisit() ? "Viewing Stop" : state.huntDone ? "Completed all" : state.checkedIn[currentStop().locationId] ? "Completed Stop" : "On Stop"} ${shownIdx() + 1} of ${STOPS.length}</b></span><span class="tap-hint">Tap a stop to revisit it</span></div>
+        <div class="steps" role="tablist" aria-label="Stops">
           ${STOPS.map((s, i) => {
             const st = state.stopStatus[s.locationId];
             const cls = st === "done" ? "done" : st === "skipped" ? "skipped" : i === state.stopIdx && !state.huntDone ? "current" : "";
-            return `<span class="step ${cls}" title="${esc(s.name)}"></span>`;
+            const reachable = i <= state.stopIdx;
+            return `<button class="step ${cls} ${i === shownIdx() ? "shown" : ""} ${reachable ? "tappable" : ""}" data-action="viewStop" data-i="${i}" role="tab" aria-selected="${i === shownIdx()}" aria-label="Stop ${i + 1}: ${esc(s.name)}${st ? ", " + st : ""}"></button>`;
           }).join("")}
         </div>
       </div>`;
@@ -221,11 +234,18 @@
 
   function viewStopCard(stop, anim) {
     const checked = !!state.checkedIn[stop.locationId];
+    const revisit = isRevisit();
+    const skipped = state.stopStatus[stop.locationId] === "skipped";
     const walk = stop.walkMinutes > 0 ? `${I.walk}${stop.walkMinutes} min walk<span class="dot"></span>${stop.walkMiles} mi` : `${I.pin}Starting point`;
     const required = challengesOf(stop).filter((c) => !c.optional).length;
     const burst = anim === "checkin" ? `<span class="burst" aria-hidden="true">${Array.from({ length: 14 }, (_, i) => `<i style="--a:${Math.round(i * (360 / 14))}deg;--d:${44 + (i % 3) * 14}px;--c:${["#E87722", "#FDD264", "#6AAEAA"][i % 3]}"></i>`).join("")}</span>` : "";
     let button, note;
-    if (checked) {
+    if (revisit) {
+      const back = state.huntDone ? "Back to results" : `Back to Stop ${state.stopIdx + 1}: ${esc(currentStop().name)}`;
+      button = checked ? `<button class="btn checked" disabled>${I.check}Checked in</button>` : `<button class="btn ghost" disabled>${I.flag}Skipped</button>`;
+      note = `<p class="cta-note">${checked ? `<b class="earned-note">+${SCORING.checkIn} pts</b> · the ${required} challenges below are still open` : "You skipped this stop. No points lost."}</p>
+          <div class="btn-row"><button class="btn primary" data-action="backToCurrent">${back}${I.arrow}</button></div>`;
+    } else if (checked) {
       const next = nextStop();
       button = `<button class="btn checked ${anim === "checkin" ? "pop" : ""}" disabled>${I.check}Checked in${burst}</button>`;
       note = `<p class="cta-note"><b class="earned-note ${anim === "checkin" ? "rise" : ""}">+${SCORING.checkIn} pts</b> · ${required} optional challenges below</p>
@@ -243,7 +263,7 @@
         <div class="stop-photo">
           <img src="${stop.photo}" alt="">
           <div class="shade"></div>
-          <span class="badge ${state.arrived ? "" : "next"}">${state.arrived ? "You're here" : "Next stop"}</span>
+          <span class="badge ${revisit ? (skipped ? "next" : "done") : state.arrived ? "" : "next"}">${revisit ? (skipped ? "Skipped" : "Completed") : state.arrived ? "You're here" : "Next stop"}</span>
           <h2>${esc(stop.name)}</h2>
         </div>
         <div class="card-body">
@@ -251,7 +271,7 @@
           <p class="lore ${state.loreOpen ? "" : "clamp"}">${esc(stop.description)}</p>
           <button class="linkbtn" data-action="toggleLore">${state.loreOpen ? "Less" : "Read more"}</button>
           <div class="btn-row">
-            ${state.arrived || checked ? "" : `<button class="btn secondary" data-action="showMap">${I.nav}Directions</button>`}
+            ${state.arrived || checked || revisit ? "" : `<button class="btn secondary" data-action="showMap">${I.nav}Directions</button>`}
             ${button}
           </div>
           ${note}
@@ -334,19 +354,26 @@
       <div class="spacer-bottom"></div>`;
   }
 
+  function viewRevisitBar() {
+    if (!isRevisit()) return "";
+    const st = state.stopStatus[shownStop().locationId];
+    const back = state.huntDone ? "Back to results" : `Back to Stop ${state.stopIdx + 1}`;
+    return `<div class="revisit-bar">${I.flag}<span>You're looking at a ${st === "skipped" ? "skipped" : "completed"} stop</span><button class="btn sm" data-action="backToCurrent">${back}${I.arrow}</button></div>`;
+  }
+
   function viewHunt(anim) {
-    const stop = currentStop();
+    const stop = shownStop();
     let body;
-    if (state.huntDone) body = viewHuntDone();
+    if (state.huntDone && !isRevisit()) body = viewHuntDone();
     else if (state.checkedIn[stop.locationId]) body = viewAtStop(stop, anim);
     else body = viewTravel(stop, anim);
-    return `${viewTopbar()}<main class="screen">${viewRoute()}${body}</main>`;
+    return `${viewTopbar()}<main class="screen">${viewRoute()}${viewRevisitBar()}${body}</main>`;
   }
 
   // ---------- sheets ----------
   function viewChallengeSheet(s) {
     const c = G.allChallenges[s.id];
-    const stop = currentStop();
+    const stop = shownStop();
     const list = challengesOf(stop).filter((x) => !x.optional);
     const idx = list.findIndex((x) => x.challengeId === s.id);
     const fb = s.feedback;
