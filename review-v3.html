@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Let's Roam - Hunt screen: what it needs to say (v3)</title>
+  <title>Let's Roam - Main Hunt Screen Redesign</title>
   <link rel="stylesheet" href="./styles.css">
   <style>
     body { background: #F6F3EE; }
@@ -19,12 +19,15 @@
     .hero { display: grid; grid-template-columns: 1fr minmax(240px, 300px); gap: 32px; align-items: center; margin-bottom: 48px; }
     @media (max-width: 720px) { .hero { grid-template-columns: 1fr; } .hero-shot { order: -1; } }
     .hero .cta { margin-bottom: 0; }
+    .hero .src { margin: 10px 0 0; font-size: 13px; font-weight: 600; color: var(--lr-gray-3); }
+    .hero .src a { color: var(--lr-gray-3); }
+    .hero .lead { font-size: 15.5px; margin-bottom: 10px; }
     .hero-shot .cap { font-size: 13px; color: var(--lr-gray-3); font-weight: 600; text-align: center; margin: 10px 0 0; }
     .label { font-size: 13px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--lr-orange); margin: 0 0 8px; }
     h2 { font-size: 32px; letter-spacing: -0.04em; line-height: 1.05; margin: 0 0 18px; }
     section { margin-bottom: 56px; }
 
-    .needs { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+    .needs { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
     .need { background: #fff; border-radius: 12px; box-shadow: var(--shadow-card); padding: 20px 20px 18px; }
     .need .big { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin: 0 0 10px; }
     .need p { margin: 0; font-size: 15px; line-height: 1.55; font-weight: 500; color: var(--lr-gray-4); }
@@ -44,8 +47,9 @@
     /* Old | notes | new */
     .pair { margin-bottom: 54px; }
     .pair h3 { font-size: 24px; letter-spacing: -0.03em; margin: 0 0 14px; }
-    .trio { display: grid; grid-template-columns: minmax(220px, 300px) 1fr minmax(220px, 300px); gap: 22px; align-items: center; }
-    @media (max-width: 820px) { .trio { grid-template-columns: 1fr 1fr; } .trio .notes { grid-column: 1 / -1; order: 3; } }
+    .trio { display: grid; grid-template-columns: minmax(200px, 270px) minmax(200px, 270px) 1fr; gap: 22px; align-items: start; }
+    .trio .notes { align-self: center; }
+    @media (max-width: 820px) { .trio { grid-template-columns: 1fr 1fr; } .trio .notes { grid-column: 1 / -1; } }
     .shot { text-align: center; }
     .shot .tag { display: inline-block; padding: 6px 14px; border-radius: 50px; font-weight: 700; font-size: 13px; margin-bottom: 10px; }
     .shot .tag.old { background: var(--lr-gray-light); color: var(--lr-gray-3); }
@@ -67,39 +71,35 @@
 <div class="wrap">
   <div class="hero">
     <div class="hero-text">
-      <h1>The hunt screen: what it needs to say</h1>
-      <p class="lead">People spend the whole walking tour on this one screen, usually in a group, outdoors, often at night.
-        Completion and satisfaction have dropped. This page sets out what the screen is for, the rules the redesign
-        follows, and then puts the old and new side by side.</p>
-      <div class="cta"><a class="primary" href="./index.html">Try the redesign</a><a class="secondary" href="https://github.com/mikeprimak/lets-roam-hunt">Source on GitHub</a></div>
+      <h1>Main Hunt Screen Redesign</h1>
+      <p class="lead">The purpose of this redesign is to improve completion rate and customer satisfaction rate for Let's Roam tours.</p>
+      <p class="lead">The Main Hunt Screen and its associated user workflow is the core of the app, and is the most important to completion rate and customer satisfaction.</p>
+      <p class="lead">My design philosophy usually centers around Clarity. I find a UI that is clear is good. The design should communicate very clearly "What the user is supposed to do on this screen," and ideally that is a single primary action. That action should always be very obvious and easy to take in-app action on. In practice this means using color, size, location, omission and other elements to focus the user on their next task: big orange buttons, very clear language, all secondary info subservient to the main goals.</p>
+      <div class="cta"><a class="primary" href="./index.html">Try a Demo of the Redesigned Screen</a></div>
+      <p class="src"><a href="https://github.com/mikeprimak/lets-roam-hunt">Source on GitHub</a></p>
     </div>
-    <div class="hero-shot"><div class="frame"><img src="./assets/redesign/start.png" alt="Redesigned hunt screen at the first stop: Check In and Start Tour"></div><p class="cap">The redesign, stop 1. One card, one button.</p></div>
+    <div class="hero-shot"><div class="frame"><img src="./assets/redesign/start.png" alt="Redesigned hunt screen at the first stop: Check In and Start Tour"></div><p class="cap">The Redesigned Main Hunt Screen</p></div>
   </div>
 
   <section>
     <p class="label">Part one</p>
-    <h2>What this screen needs to communicate</h2>
+    <h2>What the main hunt screen needs to communicate</h2>
     <div class="needs">
-      <div class="need"><p class="big">Where do we go next?</p><p>The name of the next stop, a picture of it, and <b>how long the walk is</b>. Not "2.87 mi". "6 min walk".</p></div>
-      <div class="need"><p class="big">What do we do when we get there?</p><p><b>Check in. That is the job.</b> Then the next stop is one tap away, and the challenges at this stop are optional extras, each with a word for what it is: Trivia, Photo, Fill in.</p></div>
-      <div class="need"><p class="big">Are we doing OK?</p><p><b>"On Stop 2 of 5"</b> and a score. That is enough. Rank, rings, timers and breakdowns can wait for the end.</p></div>
-      <div class="need"><p class="big">What if we're stuck?</p><p>A gate is locked, a question is too hard, the GPS is wrong. <b>There is always a way forward</b> and it never costs the team anything.</p></div>
+      <div class="need"><p class="big">Where do we go next?</p><p>The name of the next stop, a picture of it, and <b>an estimated walk time</b>.</p></div>
+      <div class="need"><p class="big">What do we do when we get there?</p><p><b>Check in.</b> The user should feel confident about what to actually do in app once they arrive at a location.</p></div>
+      <div class="need"><p class="big">Are we doing OK?</p><p><b>Reassurance</b> that the users are on track and following the tour correctly. A progress bar that clearly indicates what stop they are on and where they stand relative to the whole tour.</p></div>
     </div>
-    <p class="then">Anything on the screen that does not answer one of those four questions has to earn its place, or go.</p>
+    <p class="then">Anything on the screen that does not answer one of these three issues should be questioned. Clarity of main goal over breadth of info and options.</p>
   </section>
 
   <section>
     <p class="label">Part two</p>
     <h2>Design philosophy</h2>
     <div class="phil">
-      <div class="p lead-p"><span class="n">1</span><div><h3>Clarity first. Reward second.</h3><p>A group standing on a pavement should know what to do in one glance. Points, the fox and the celebration matter, but they come <em>after</em> the action, never instead of it. A hunt nobody finishes has no fun in it.</p></div></div>
-      <div class="p"><span class="n">2</span><div><h3>One next action</h3><p>Every state of the screen has exactly one primary button: Directions, Check in, Submit, Let's go. If two things are orange, neither is the answer.</p></div></div>
-      <div class="p"><span class="n">3</span><div><h3>Never a dead end</h3><p>Closed stop, hard question, bad signal: each has a plain way out (skip, hint, move on) and skipping never loses points. The worst outcome is a team that gives up.</p></div></div>
-      <div class="p"><span class="n">4</span><div><h3>Nothing you can't control can cost you</h3><p>No GPS-accuracy score, no speed bonus, no countdown as the biggest number on screen. Groups that are enjoying the tour should not be punished for taking their time.</p></div></div>
-      <div class="p"><span class="n">5</span><div><h3>Say it in words</h3><p>Labels beat colour codes and mystery icons. Plain English beats game jargon. "Check in turns on when you are within 50 m" instead of a greyed-out button and a guess.</p></div></div>
-      <div class="p"><span class="n">6</span><div><h3>One layer deep</h3><p>The main screen is home. At most one sheet slides over it, and closing it always lands you back where you were. No modal on a sheet on a modal.</p></div></div>
-      <div class="p"><span class="n">7</span><div><h3>Checking in is the win</h3><p>Arriving is the accomplishment, so the check-in itself gets the celebration: the button pops, confetti, the points land, and "Next stop" appears right there. Challenges are optional extras that slide up under the same card, so a group can always keep moving.</p></div></div>
-      <div class="p"><span class="n">8</span><div><h3>Use the brand as given</h3><p>One typeface, one orange, one icon style, the fox. No emoji, no fourth font. Consistency reads as "finished", and finished reads as trustworthy.</p></div></div>
+      <div class="p lead-p"><span class="n">1</span><div><h3>Clarity First.</h3><p>A group standing on a pavement should know what to do in one glance. Points, the gamification and extras matter, but they must be secondary to clarity of the core flow.</p></div></div>
+      <div class="p"><span class="n">2</span><div><h3>One next action</h3><p>Every state of the screen has exactly one primary button: Directions, Check in, Submit, Next stop. If two things are orange, neither is the answer.</p></div></div>
+      <div class="p"><span class="n">3</span><div><h3>Use Words</h3><p>Labels beat colour codes and icons alone. Plain English beats jargon. "Check in turns on when you are within 50 m" instead of a greyed-out button and a guess.</p></div></div>
+      <div class="p"><span class="n">4</span><div><h3>Checking-In Is A Big Win</h3><p>Arriving is a core accomplishment for Let's Roamers, so the check-in itself gets the celebration: the button pops, confetti, the points land, and "Next stop" appears right there. Challenges are optional extras that slide up under the same card, so a group can always keep moving.</p></div></div>
     </div>
   </section>
 
@@ -111,6 +111,7 @@
       <h3>Starting the tour</h3>
       <div class="trio">
         <div class="shot"><span class="tag old">Current</span><div class="frame"><img src="./assets/current/screen-04.png" alt="Current main hunt screen"></div></div>
+        <div class="shot"><span class="tag new">Redesign</span><div class="frame"><img src="./assets/redesign/start.png" alt="Redesign, first stop"></div></div>
         <div class="notes">
           <p class="k">What changed</p>
           <ul>
@@ -122,14 +123,14 @@
             <li>Route bar is tappable<small>revisit or unskip a stop; a navy bar always leads back</small></li>
           </ul>
         </div>
-        <div class="shot"><span class="tag new">Redesign</span><div class="frame"><img src="./assets/redesign/start.png" alt="Redesign, first stop"></div></div>
       </div>
     </div>
 
     <div class="pair">
-      <h3>At the stop</h3>
+      <h3>After Checking In</h3>
       <div class="trio">
         <div class="shot"><span class="tag old">Current</span><div class="frame"><img src="./assets/current/screen-08.png" alt="Current challenge list sheet"></div></div>
+        <div class="shot"><span class="tag new">Redesign</span><div class="frame"><img src="./assets/redesign/at-stop.png" alt="Redesign, checked in with next stop and challenges"></div></div>
         <div class="notes">
           <p class="k">What changed</p>
           <ul>
@@ -140,14 +141,14 @@
             <li>No third sheet, no chips<small>"Completed Stop 1 of 5" up top</small></li>
           </ul>
         </div>
-        <div class="shot"><span class="tag new">Redesign</span><div class="frame"><img src="./assets/redesign/at-stop.png" alt="Redesign, checked in with next stop and challenges"></div></div>
       </div>
     </div>
 
     <div class="pair">
-      <h3>Between stops</h3>
+      <h3>En Route</h3>
       <div class="trio">
         <div class="shot"><span class="tag old">Current</span><div class="frame"><img src="./assets/current/screen-11.png" alt="Current location complete modal"></div></div>
+        <div class="shot"><span class="tag new">Redesign</span><div class="frame"><img src="./assets/redesign/next-stop.png" alt="Redesign, on the way to stop 2"></div></div>
         <div class="notes">
           <p class="k">What changed</p>
           <ul>
@@ -157,7 +158,6 @@
             <li>Fox and emoji gone from the flow<small>the fox waits for the finish</small></li>
           </ul>
         </div>
-        <div class="shot"><span class="tag new">Redesign</span><div class="frame"><img src="./assets/redesign/next-stop.png" alt="Redesign, on the way to stop 2"></div></div>
       </div>
     </div>
 
