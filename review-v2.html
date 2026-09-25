@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Let's Roam - Hunt screen: what it needs to say</title>
+  <link rel="stylesheet" href="./styles.css">
+  <style>
+    body { background: #F6F3EE; }
+    .wrap { max-width: 1060px; margin: 0 auto; padding: 28px 16px 70px; }
+    h1 { font-size: 38px; letter-spacing: -0.04em; line-height: 1.05; margin: 0 0 8px; }
+    .lead { font-size: 17px; color: var(--lr-gray-3); font-weight: 500; line-height: 1.6; max-width: 720px; margin: 0 0 14px; }
+    .lead a { color: var(--lr-black); }
+    .cta { display: flex; gap: 10px; flex-wrap: wrap; margin: 6px 0 40px; }
+    .cta a { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 50px; font-weight: 700; text-decoration: none; font-size: 15px; }
+    .cta a.primary { background: var(--lr-orange); color: #fff; }
+    .cta a.secondary { background: #fff; color: var(--lr-black); box-shadow: inset 0 0 0 2px var(--lr-black); }
+
+    .label { font-size: 13px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--lr-orange); margin: 0 0 8px; }
+    h2 { font-size: 32px; letter-spacing: -0.04em; line-height: 1.05; margin: 0 0 18px; }
+    section { margin-bottom: 56px; }
+
+    /* What it needs to communicate */
+    .needs { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+    .need { background: #fff; border-radius: 12px; box-shadow: var(--shadow-card); padding: 20px 20px 18px; }
+    .need .big { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin: 0 0 10px; }
+    .need p { margin: 0; font-size: 15px; line-height: 1.55; font-weight: 500; color: var(--lr-gray-4); }
+    .need p b { color: var(--lr-black); }
+    .then { margin: 16px 0 0; font-size: 16px; font-weight: 600; color: var(--lr-gray-3); }
+
+    /* Philosophy */
+    .phil { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+    .p { background: #fff; border-radius: 12px; box-shadow: var(--shadow-card); padding: 18px 20px; display: flex; gap: 14px; }
+    .p .n { flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--lr-black); color: #fff; font-weight: 800; display: grid; place-items: center; font-size: 15px; }
+    .p h3 { margin: 4px 0 6px; font-size: 19px; letter-spacing: -0.03em; }
+    .p p { margin: 0; font-size: 14.5px; line-height: 1.55; font-weight: 500; color: var(--lr-gray-4); }
+    .p.lead-p { grid-column: 1 / -1; background: var(--lr-black); color: #fff; }
+    .p.lead-p .n { background: var(--lr-orange); }
+    .p.lead-p h3 { font-size: 24px; }
+    .p.lead-p p { color: #ddd; font-size: 16px; }
+
+    /* Comparison */
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+    @media (max-width: 720px) { .compare { grid-template-columns: 1fr; } }
+    .shot { text-align: center; }
+    .shot .tag { display: inline-block; padding: 6px 14px; border-radius: 50px; font-weight: 700; font-size: 13px; margin-bottom: 10px; }
+    .shot .tag.old { background: var(--lr-gray-light); color: var(--lr-gray-3); }
+    .shot .tag.new { background: var(--lr-off-orange); color: var(--lr-orange); }
+    .frame { border-radius: 26px; overflow: hidden; box-shadow: 0 12px 34px rgba(0,0,0,.16); background: #000; max-width: 360px; margin: 0 auto; }
+    .frame img { width: 100%; display: block; }
+    .shot .cap { font-size: 14px; color: var(--lr-gray-3); font-weight: 500; line-height: 1.5; margin: 12px auto 0; max-width: 360px; }
+
+    table { border-collapse: collapse; width: 100%; font-size: 14.5px; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-card); margin-top: 26px; }
+    th, td { text-align: left; padding: 13px 14px; border-bottom: 1px solid var(--lr-gray-light); vertical-align: top; font-weight: 500; line-height: 1.5; }
+    th { font-weight: 700; background: var(--lr-off-orange); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
+    td:first-child { font-weight: 700; width: 20%; }
+    td.old { color: var(--lr-gray-3); width: 40%; }
+    td.new { width: 40%; }
+    td.new b { color: #2F6B67; }
+    @media (max-width: 720px) { table, thead, tbody, tr, td, th { display: block; } thead { display: none; } td { width: auto !important; border: 0; padding: 6px 14px; } td:first-child { padding-top: 14px; background: var(--lr-off-orange); } td.new { padding-bottom: 14px; border-bottom: 1px solid var(--lr-gray-light); } td.old::before { content: "Current: "; font-weight: 700; } td.new::before { content: "Redesign: "; font-weight: 700; } }
+
+    .pair { margin-top: 44px; }
+    .pair h3 { font-size: 22px; letter-spacing: -0.03em; margin: 0 0 4px; }
+    .pair .why { font-size: 15px; color: var(--lr-gray-3); font-weight: 500; margin: 0 0 16px; max-width: 720px; line-height: 1.55; }
+    .foot { font-size: 14px; color: var(--lr-gray-3); font-weight: 500; margin-top: 30px; }
+    .foot a { color: var(--lr-black); }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>The hunt screen: what it needs to say</h1>
+  <p class="lead">People spend the whole walking tour on this one screen, usually in a group, outdoors, often at night.
+    Completion and satisfaction have dropped. Before touching pixels, this page sets out what the screen is for,
+    the rules the redesign follows, and then puts the old and new side by side.</p>
+  <div class="cta"><a class="primary" href="./index.html">Try the redesign</a><a class="secondary" href="./review.html">Screen-by-screen comments (v1)</a><a class="secondary" href="https://github.com/mikeprimak/lets-roam-hunt">Source on GitHub</a></div>
+
+  <!-- 1. What it needs to communicate -->
+  <section>
+    <p class="label">Part one</p>
+    <h2>What this screen needs to communicate</h2>
+    <div class="needs">
+      <div class="need"><p class="big">Where do we go next?</p><p>The name of the next stop, a picture of it, and <b>how long the walk is</b>. Not "2.87 mi". "6 min walk".</p></div>
+      <div class="need"><p class="big">What do we do when we get there?</p><p><b>Check in, then do these three things.</b> Shown as a short list with a word for each: Trivia, Photo, Fill in. Not a colour code.</p></div>
+      <div class="need"><p class="big">Are we doing OK?</p><p><b>"Stop 2 of 5"</b> and a score. That is enough. Rank, rings, timers and breakdowns can wait for the end.</p></div>
+      <div class="need"><p class="big">What if we're stuck?</p><p>A gate is locked, a question is too hard, the GPS is wrong. <b>There is always a way forward</b> and it never costs the team anything.</p></div>
+    </div>
+    <p class="then">Anything on the screen that does not answer one of those four questions has to earn its place, or go.</p>
+  </section>
+
+  <!-- 2. Design philosophy -->
+  <section>
+    <p class="label">Part two</p>
+    <h2>Design philosophy</h2>
+    <div class="phil">
+      <div class="p lead-p"><span class="n">1</span><div><h3>Clarity first. Reward second.</h3><p>A group standing on a pavement should know what to do in one glance. Points, the fox and the celebration matter, but they come <em>after</em> the action, never instead of it. A hunt nobody finishes has no fun in it.</p></div></div>
+      <div class="p"><span class="n">2</span><div><h3>One next action</h3><p>Every state of the screen has exactly one primary button: Directions, Check in, Submit, Let's go. If two things are orange, neither is the answer.</p></div></div>
+      <div class="p"><span class="n">3</span><div><h3>Never a dead end</h3><p>Closed stop, hard question, bad signal: each has a plain way out (skip, hint, move on) and skipping never loses points. The worst outcome is a team that gives up.</p></div></div>
+      <div class="p"><span class="n">4</span><div><h3>Nothing you can't control can cost you</h3><p>No GPS-accuracy score, no speed bonus, no countdown as the biggest number on screen. Groups that are enjoying the tour should not be punished for taking their time.</p></div></div>
+      <div class="p"><span class="n">5</span><div><h3>Say it in words</h3><p>Labels beat colour codes and mystery icons. Plain English beats game jargon. "Check in turns on when you are within 50 m" instead of a greyed-out button and a guess.</p></div></div>
+      <div class="p"><span class="n">6</span><div><h3>One layer deep</h3><p>The main screen is home. At most one sheet slides over it, and closing it always lands you back where you were. No modal on a sheet on a modal.</p></div></div>
+      <div class="p"><span class="n">7</span><div><h3>The moment after a stop is the whole game</h3><p>Completion is a chain of "we finished here, now where?" moments. Each one gets a card that says next stop, walk time, go.</p></div></div>
+      <div class="p"><span class="n">8</span><div><h3>Use the brand as given</h3><p>One typeface, one orange, one icon style, the fox. No emoji, no fourth font. Consistency reads as "finished", and finished reads as trustworthy.</p></div></div>
+    </div>
+  </section>
+
+  <!-- 3. Old vs new -->
+  <section>
+    <p class="label">Part three</p>
+    <h2>Current screen vs redesign</h2>
+    <div class="compare">
+      <div class="shot">
+        <span class="tag old">Current</span>
+        <div class="frame"><img src="./assets/current/screen-04.png" alt="Current main hunt screen"></div>
+        <p class="cap">Rank, four icons, a countdown, a 0% ring, two chips, a four-line explainer, a toggle, then five identical location cards. Nothing says "go here now".</p>
+      </div>
+      <div class="shot">
+        <span class="tag new">Redesign</span>
+        <div class="frame"><img src="./assets/redesign/next-stop.png" alt="Redesigned main hunt screen, on the way to a stop"></div>
+        <p class="cap">One row of status. "Stop 2 of 5". One card: next stop, 6 min walk, one line of story, Directions, Check in (enables itself on arrival), and a way out if the place is closed.</p>
+      </div>
+    </div>
+
+    <table>
+      <thead><tr><th>Principle</th><th>Current</th><th>Redesign</th></tr></thead>
+      <tbody>
+        <tr><td>Clarity first</td><td class="old">A dashboard. The first thing a group must do is work out which of five identical cards to tap.</td><td class="new"><b>One current-stop card fills the first screen.</b> The next stop and the walk time are the headline.</td></tr>
+        <tr><td>One next action</td><td class="old">No primary button. Four header icons, a "Map" chip, a "Show Ordered Locations" toggle and a side tab compete.</td><td class="new"><b>One orange button per state.</b> On the way: Directions. Arrived: Check in. Then Submit, then Let's go.</td></tr>
+        <tr><td>Reward second</td><td class="old">Rank "Top 50%", a "0% Complete" ring and point chips take the top third before any tour content.</td><td class="new"><b>Score is a small pill.</b> The fox and "+900" appear only after a stop is done, then hand off to the next stop.</td></tr>
+        <tr><td>Never a dead end</td><td class="old">"Location closed? Let us know." A locked gate ends the hunt for most groups.</td><td class="new"><b>"Skip this stop"</b> on every stop, keeping all points and showing the next one. Questions can be skipped free too.</td></tr>
+        <tr><td>Nothing you can't control</td><td class="old">"Accurate Check-Ins", "Finish Locations Quickly", "392 / 400 for Distance". Penalties for GPS and for enjoying the tour.</td><td class="new"><b>Flat +500 for checking in.</b> No distance score, no speed bonus. Time is "1h 28m", quiet until the last ten minutes, hidden on untimed hunts.</td></tr>
+        <tr><td>Say it in words</td><td class="old">Coloured tiles with no legend, unlabeled icons, "2.87 mi away" in white over a photo, "You checked in 0 min 16 secs ago".</td><td class="new"><b>Trivia / Photo / Fill in</b> as words. "6 min walk · 0.3 mi" on a white card. Rules in a help sheet in plain English.</td></tr>
+        <tr><td>One layer deep</td><td class="old">Location sheet, then a result modal, then a challenge sheet, then a question modal. Four close buttons.</td><td class="new"><b>One sheet.</b> Results show inside it, "Next challenge" advances inside it, "Done" returns home.</td></tr>
+        <tr><td>The moment after</td><td class="old">"Location Complete!" shows a score breakdown and a paragraph, then "Show Challenges".</td><td class="new"><b>"Stop done!"</b> with points, the fox, the next stop, its walk time and "Let's go".</td></tr>
+        <tr><td>Brand as given</td><td class="old">Four typefaces, three icon sets, emoji in the score breakdown.</td><td class="new"><b>Plus Jakarta Sans, design-system orange and cream, one stroke icon style, the Foxtrot mascot.</b></td></tr>
+      </tbody>
+    </table>
+
+    <div class="pair">
+      <h3>At the stop</h3>
+      <p class="why">Principles 2, 5 and 6. The current app opens a third sheet with three chips and colour-coded tiles. The redesign keeps you on the main screen: checked in, then the challenges as labelled rows with points and a done state.</p>
+      <div class="compare">
+        <div class="shot"><span class="tag old">Current</span><div class="frame"><img src="./assets/current/screen-08.png" alt="Current challenge list sheet"></div></div>
+        <div class="shot"><span class="tag new">Redesign</span><div class="frame"><img src="./assets/redesign/at-stop.png" alt="Redesign, checked in with the challenge list"></div></div>
+      </div>
+    </div>
+
+    <div class="pair">
+      <h3>After the stop</h3>
+      <p class="why">Principles 1 and 7. This is the moment groups drift. The current app answers "how did we score"; the redesign answers "where next, how far" with a single button, and only then lets the points and the fox have their moment.</p>
+      <div class="compare">
+        <div class="shot"><span class="tag old">Current</span><div class="frame"><img src="./assets/current/screen-11.png" alt="Current location complete modal"></div></div>
+        <div class="shot"><span class="tag new">Redesign</span><div class="frame"><img src="./assets/redesign/stop-done.png" alt="Redesign, stop done card with the next stop"></div></div>
+      </div>
+    </div>
+
+    <p class="foot">The detailed, screen-by-screen comments are in <a href="./review.html">version 1 of this review</a>. Measurement plan and next steps are in the <a href="https://github.com/mikeprimak/lets-roam-hunt/blob/main/DESIGN_REVIEW.md">written review</a>.</p>
+  </section>
+</div>
+</body>
+</html>
